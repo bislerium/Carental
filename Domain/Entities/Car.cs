@@ -4,13 +4,13 @@ namespace Domain.Entities
 {
     public class Car: AuditableEntity
     {
-        public int Id { get; set; }
-        public string Make { get; set; }
-        public string Model { get; set; }
-        public int Year { get; set; }
-        public string Color { get; set; }
-        public double Price { get; set; }
-
-        public ICollection<Customer> Customers { get; set; }
+        public string Make { get; set; } = null!;
+        public string Model { get; set; } = null!;
+        public DateOnly Year { get; set; }
+        public string Color { get; set; } = null!;
+        public string LicensePlate { get; set; } = null!;
+        public int RentalRate { get; set; }
+        public bool IsAvailable { get; set; }
+        public bool IsRented { get; set; }
     }
 }

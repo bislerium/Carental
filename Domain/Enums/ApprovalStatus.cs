@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces.Mailing
+namespace Domain.Enums
 {
-    public interface IEmailService
+    public enum ApprovalStatus
     {
+        Pending,
+        Approve,
+        Disapprove
     }
 }

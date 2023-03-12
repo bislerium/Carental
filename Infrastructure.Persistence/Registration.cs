@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.UnitOfWork;
 using Infrastructure.Persistence.Identity;
 using uow = Infrastructure.Persistence.UnitOfWork;
 

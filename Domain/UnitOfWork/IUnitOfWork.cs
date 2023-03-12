@@ -2,7 +2,7 @@
 using Domain.Repositories;
 using Domain.Repositories.Base;
 
-namespace Domain
+namespace Domain.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {

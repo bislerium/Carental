@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.UnitOfWork;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Persistence.UnitOfWork
