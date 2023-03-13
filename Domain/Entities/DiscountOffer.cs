@@ -8,7 +8,7 @@ namespace Domain.Entities
 
         public string Description { get; set; } = null!;
 
-        public int DiscountAmount { get; set; }
+        public int DiscountRate { get; set; }
 
         public DateTime StartDate { get; set;  }
 

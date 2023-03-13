@@ -10,16 +10,18 @@ namespace Domain.Entities
 {
     public class Rental: AuditableEntity
     {
-        public int CustomerID { get; set; }
+        public int CustomerId { get; set; }
 
         public Customer Customer { get; set; } = null!;
 
-        public int CarID { get; set; }
+        public int CarId { get; set; }
 
         public Car Car { get; set; } = null!;
 
         public ApprovalStatus ApprovalStatus { get; set; } = ApprovalStatus.Pending;
 
         public bool IsCancelled { get; set; }
+
+        public bool IsReturned { get; set; }
     }
 }

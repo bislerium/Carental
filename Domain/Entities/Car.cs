@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Enums;
 
 namespace Domain.Entities
 {
@@ -8,9 +9,11 @@ namespace Domain.Entities
         public string Model { get; set; } = null!;
         public DateOnly Year { get; set; }
         public string Color { get; set; } = null!;
-        public string LicensePlate { get; set; } = null!;
-        public int RentalRate { get; set; }
-        public bool IsAvailable { get; set; }
-        public bool IsRented { get; set; }
+        public int Seats { get; set; }
+        public CarType CarType { get; set; }
+        public FuelType FuelType { get; set; }
+
+        public int InventoryId { get; set; }
+        public Inventory Inventory { get; set; } = null!;
     }
 }

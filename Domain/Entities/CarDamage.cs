@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,11 @@ namespace Domain.Entities
 
         public string DamageDescription { get; set; } = null!;
 
-        public DateTime DamageReportTime { get; set; }
+        public DateTime ReportedOn { get; set; }
 
-        public bool IsInspected { get; set; }
+        public ReviewStatus ReviewStatus { get; set; }
 
-        public bool IsCharegeable { get; set; }
+        public DateTime ReviewedOn { get; set; }
 
         public bool IsChargePaid { get; set; }
 

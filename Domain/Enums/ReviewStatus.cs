@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Enums
 {
-    public enum ApprovalStatus
+    public enum ReviewStatus
     {
-        PENDING,
-        APPROVE,
-        DISAPPROVE,
+        INPROGRESS,
+        COMPLETED,
     }
 }
