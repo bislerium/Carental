@@ -4,9 +4,9 @@ using Infrastructure.Persistence.Repositories.Base;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class CarRepository : Repostiory<Car>, ICarRepository
+    public class CarInventoryRepository : Repostiory<CarInventory>, ICarInventoryRepository
     {
-        public CarRepository(AppDBContext dbContext) : base(dbContext)
+        public CarInventoryRepository(AppDBContext dbContext) : base(dbContext)
         {
         }
     }

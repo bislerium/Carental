@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public class DiscountOffer: AuditableEntity
+    public class DiscountOffer: BaseAuditableEntity
     {
         public string Title { get; set; } = null!;
 

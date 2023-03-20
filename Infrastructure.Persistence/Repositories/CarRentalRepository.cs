@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class CustomerRepository : Repostiory<Customer>, ICustomerRepository
+    public class CarRentalRepository : Repostiory<CarRental>, ICarRentalRepository
     {
-        public CustomerRepository(AppDBContext dbContext) : base(dbContext)
+        public CarRentalRepository(AppDBContext dbContext) : base(dbContext)
         {
         }
     }

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    internal class File: AuditableEntity
+    internal class File: BaseAuditableEntity
     {
+
         public string FilePath { get; set; } = null!;
 
         public string Name { get 

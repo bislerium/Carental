@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Persistence.UnitOfWork
 {
-    public class UnitOfWork: Repositories, IUnitOfWork
+    public class UnitOfWork: Repositories.Repositories, IUnitOfWork
     {
         private IDbContextTransaction? _transaction;
 

@@ -1,9 +1,9 @@
 ﻿using Domain.Common;
 using Domain.Repositories.Base;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Persistence.Repositories.Base
 {
-    public class Repostiory<TEntity> : IRepository<TEntity> where TEntity : Entity
+    public class Repostiory<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, new()
     {
         private readonly AppDBContext _dbContext;
 
@@ -32,7 +32,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public void Delete(TEntity entity)
         {
-            _dbContext.Entry(entity).State= EntityState.Deleted;
+            _dbContext.Entry(entity).State = EntityState.Deleted;
         }
     }
 }

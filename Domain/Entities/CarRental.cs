@@ -8,20 +8,24 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Rental: AuditableEntity
+    public class CarRental: BaseAuditableEntity
     {
         public int CustomerId { get; set; }
 
         public Customer Customer { get; set; } = null!;
 
-        public int CarId { get; set; }
+        public int CarInventoryId { get; set; }
 
-        public Car Car { get; set; } = null!;
+        public CarInventory CarInventory { get; set; } = null!;
 
-        public ApprovalStatus ApprovalStatus { get; set; } = ApprovalStatus.Pending;
+        public DateOnly RequestDate { get; set; }
+
+        public ApprovalStatus ApprovalStatus { get; set; } = ApprovalStatus.PENDING;
 
         public bool IsCancelled { get; set; }
 
         public bool IsReturned { get; set; }
+
+        public virtual CarDamage? CarDamage { get; set; }
     }
 }

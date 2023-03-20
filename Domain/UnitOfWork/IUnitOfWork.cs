@@ -1,13 +1,9 @@
-﻿using Domain.Entities;
-using Domain.Repositories;
-using Domain.Repositories.Base;
+﻿using Domain.Repositories;
 
 namespace Domain.UnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IRepositories, IDisposable
     {
-        ICarRepository CarRepository { get; }
-        ICustomerRepository CustomerRepository { get; }
         Task BeginTransactionAsync(CancellationToken cancellationToken = default);
         Task CommitAsync(CancellationToken cancellationToken = default);
         Task RollbackAsync(CancellationToken cancellationToken = default);

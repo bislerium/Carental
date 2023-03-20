@@ -1,18 +1,11 @@
 ﻿using Domain.Common;
 using Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class CarDamage: AuditableEntity
+    public class CarDamage: BaseAuditableEntity
     {
-        public int RentalID { get; set; }
-
-        public Rental Rental { get; set; } = null!;
+        public CarRental Rental { get; set; } = null!;
 
         public string DamageDescription { get; set; } = null!;
 
@@ -22,9 +15,12 @@ namespace Domain.Entities
 
         public DateTime ReviewedOn { get; set; }
 
+        public int Charge { get; set; }
+
         public bool IsChargePaid { get; set; }
 
         public DateTime PaidOn { get; set; }
 
+        public PaymentType PaymentType { get; set; }        
     }
 }

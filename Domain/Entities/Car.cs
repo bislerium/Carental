@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace Domain.Entities
 {
-    public class Car: AuditableEntity
+    public class Car: BaseAuditableEntity
     {
         public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
@@ -13,7 +13,6 @@ namespace Domain.Entities
         public CarType CarType { get; set; }
         public FuelType FuelType { get; set; }
 
-        public int InventoryId { get; set; }
-        public Inventory Inventory { get; set; } = null!;
+        public CarInventory CarInventory { get; set; } = null!;
     }
 }
