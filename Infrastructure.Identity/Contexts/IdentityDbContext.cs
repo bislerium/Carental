@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Identity.Contexts
 {
@@ -9,13 +9,18 @@ namespace Infrastructure.Identity.Contexts
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=WALKAN\\SQLEXPRESS01;Database=Carental;Trusted_Connection=True;TrustServerCertificate=True");
+            var builder = new ConfigurationBuilder()
+               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+               .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
+            var configuration = builder.Build();
+
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Debug"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDBContext).Assembly);
+
         }
     }
 }

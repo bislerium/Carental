@@ -1,11 +1,12 @@
 ﻿using Domain.Entities;
-using Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 namespace Infrastructure.Persistence.Contexts
 {
-    public class AppDBContext: IdentityDbContext<AppUser>
+    public class AppDBContext: DbContext
     {
         private readonly IHostingEnvironment? _environment;
 
@@ -13,7 +14,7 @@ namespace Infrastructure.Persistence.Contexts
 
         public DbSet<Customer> Customers { get; set; }
 
-        public AppDBContext()
+        public AppDBContext(DbContextOptions<AppDBContext> options)
         {
             //For migration purpose only
         }
@@ -23,17 +24,28 @@ namespace Infrastructure.Persistence.Contexts
             _environment = environment;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+/*        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            var configuration = builder.Build();
+
+            Console.WriteLine(configuration["ConnectionStrings"]);
+            Debug.WriteLine(configuration["ConnectionStrings"]);
+
             optionsBuilder.UseSqlServer("Data Source=WALKAN\\SQLEXPRESS01;Database=Carental;Trusted_Connection=True;TrustServerCertificate=True");
-            if (_environment?.IsDevelopment() ?? false) { 
-               optionsBuilder.EnableSensitiveDataLogging();
+
+
+            if (_environment?.IsDevelopment() ?? false)
+            {
+                optionsBuilder.EnableSensitiveDataLogging();
             }
-        }
+        }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDBContext).Assembly);
         }
     }
