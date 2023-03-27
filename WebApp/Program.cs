@@ -1,18 +1,15 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Infrastructure.Persistence.Contexts;
+using Infrastructure.Persistence;
+using Infrastructure.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
-
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Configuration.AddConfiguration(Configuration.Startup.GetConfiguration());
+
+builder.Services.AddInfrastructurePersistence(builder.Configuration);
+builder.Services.AddInfrastructureIdentity(builder.Configuration);
 
 var app = builder.Build();
 

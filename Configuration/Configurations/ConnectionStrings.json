@@ -1,0 +1,6 @@
+{
+  "ConnectionStrings": {
+    "IdentityDb": "Data Source=WALKAN\\SQLEXPRESS01;Database=Carental;Trusted_Connection=True;TrustServerCertificate=True",
+    "DomainDb": ""
+  }
+}
