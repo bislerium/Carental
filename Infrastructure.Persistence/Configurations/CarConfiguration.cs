@@ -1,9 +1,6 @@
-﻿
-
-using Domain.Entities;
+﻿using Domain.Entities;
 using Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Persistence.Configurations
 {

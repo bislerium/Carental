@@ -1,15 +1,20 @@
+using Configuration;
 using Infrastructure.Persistence;
 using Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Add services to the containers
 
-builder.Configuration.AddConfiguration(Configuration.Startup.GetConfiguration());
+builder.Configuration.AddConfiguration();
+
+var s  = builder.Configuration.GetConnectionString("DomainDB");
 
 builder.Services.AddInfrastructurePersistence(builder.Configuration);
 builder.Services.AddInfrastructureIdentity(builder.Configuration);
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 

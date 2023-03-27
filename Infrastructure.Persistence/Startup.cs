@@ -8,7 +8,7 @@ namespace Infrastructure.Persistence
         public static void AddInfrastructurePersistence(this IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<AppDBContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("ApplicationDB"));
+                options.UseSqlServer(configuration.GetConnectionString("DomainDB"));
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();

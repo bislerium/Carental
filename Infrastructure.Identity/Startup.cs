@@ -15,7 +15,7 @@ namespace Infrastructure.Identity
             });
 
             services
-                .AddIdentity<IdentityUser, IdentityRole>(options => { 
+                .AddIdentity<IdentityUser<int>, IdentityRole<int>>(options => { 
                     options.SignIn.RequireConfirmedAccount = true;
                 })
                 .AddEntityFrameworkStores<IdentityDbContext>()

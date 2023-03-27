@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces.File;
-using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.Persistence.FileProviders
 {
@@ -8,11 +7,6 @@ namespace Infrastructure.Persistence.FileProviders
         private readonly string _rootpath;
 
         private const string _MEDIA_FOLDER = "Media";
-
-        public FileProvider(IHostingEnvironment environment)
-        {
-            _rootpath = environment.ContentRootPath;
-        }
 
         public Stream Read(string path)
         {
