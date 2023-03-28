@@ -5,7 +5,8 @@ namespace Infrastructure.Persistence
 {
     public static class Startup
     {
-        public static void AddInfrastructurePersistence(this IServiceCollection services, IConfiguration configuration) {
+        public static void AddInfrastructurePersistence(this IServiceCollection services, IConfiguration configuration) 
+        {
             services.AddDbContext<AppDBContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DomainDB"));
