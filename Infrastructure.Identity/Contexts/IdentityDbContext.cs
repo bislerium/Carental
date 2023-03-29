@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Identity.Contexts
 {
-    internal class IdentityDbContext: IdentityDbContext<AppUser, IdentityRole<int>, int>
+    internal class IdentityDbContext: IdentityDbContext<AppUser>
     {
         public IdentityDbContext(DbContextOptions options) : base(options)
         {
@@ -15,11 +15,7 @@ namespace Infrastructure.Identity.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<AppUser>()
-                .HasOne(x => x.User)
-                .WithOne()
-                .HasForeignKey<User>(u => u.Id);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityDbContext).Assembly);
         }
     }
 }

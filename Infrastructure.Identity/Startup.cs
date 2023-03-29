@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Identity.Contexts;
+using Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,12 +11,13 @@ namespace Infrastructure.Identity
     {
         public static void AddInfrastructureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<IdentityDbContext>(options => {
+            services
+                .AddDbContext<IdentityDbContext>(options => {
                 options.UseSqlServer(configuration.GetConnectionString("IdentityDB"));
-            });
+                });
 
             services
-                .AddIdentity<IdentityUser<int>, IdentityRole<int>>(options => { 
+                .AddIdentity<AppUser, IdentityRole>(options => { 
                     options.SignIn.RequireConfirmedAccount = true;
                 })
                 .AddEntityFrameworkStores<IdentityDbContext>()
