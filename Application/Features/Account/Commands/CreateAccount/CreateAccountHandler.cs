@@ -2,9 +2,9 @@
 using Domain.UnitOfWork;
 using FluentResults;
 
-namespace Application.Features.Account.CreateAccount
+namespace Application.Features.Account.Commands.CreateAccount
 {
-    public sealed class CreateAccountHandler : ICommandHandler<CreateAccount>
+    public sealed class CreateAccountHandler : ICommandHandler<CreateAccountCommand>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,7 +13,7 @@ namespace Application.Features.Account.CreateAccount
             _unitOfWork = unitOfWork;
         }
 
-        public Task<Result> Handle(CreateAccount request, CancellationToken cancellationToken)
+        public Task<Result> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

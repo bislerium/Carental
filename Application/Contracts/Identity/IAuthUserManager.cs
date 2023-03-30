@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Contracts.Identity
 {
-    public interface IUserManager
+    public interface IAuthUserManager
     {
     }
 }
