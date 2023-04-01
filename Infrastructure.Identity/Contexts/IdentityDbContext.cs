@@ -6,16 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Identity.Contexts
 {
-    internal class IdentityDbContext: IdentityDbContext<AppUser>
+    internal class IdentityDBContext: IdentityDbContext<AppUser>
     {
-        public IdentityDbContext(DbContextOptions options) : base(options)
+        public IdentityDBContext(DbContextOptions options) : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityDBContext).Assembly);
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using Domain.UnitOfWork;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Persistence.UnitOfWork
 {
-    public class UnitOfWork: Repositories.Repositories, IUnitOfWork
+    public class AppUnitOfWork: AppRepositories, IUnitOfWork
     {
         private IDbContextTransaction? _transaction;
 
-        public UnitOfWork(AppDBContext dbContext) : base(dbContext) { }
+        public AppUnitOfWork(AppDBContext dbContext) : base(dbContext) { }
 
         public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
         {

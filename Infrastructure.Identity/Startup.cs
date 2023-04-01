@@ -14,7 +14,7 @@ namespace Infrastructure.Identity
         public static void AddInfrastructureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddDbContext<IdentityDbContext>(options => {
+                .AddDbContext<IdentityDBContext>(options => {
                 options.UseSqlServer(configuration.GetConnectionString("IdentityDB"));
                 });
 
@@ -35,7 +35,7 @@ namespace Infrastructure.Identity
                     options.Lockout.MaxFailedAccessAttempts = 3;
                     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(5);
                 })
-                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddEntityFrameworkStores<IdentityDBContext>()
                 .AddDefaultTokenProviders();
 
             services.AddScoped<ISignInManager, AuthSignInManager>();

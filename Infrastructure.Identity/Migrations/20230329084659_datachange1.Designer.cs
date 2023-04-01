@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Identity.Migrations
 {
-    [DbContext(typeof(IdentityDbContext))]
+    [DbContext(typeof(IdentityDBContext))]
     [Migration("20230329084659_datachange1")]
     partial class datachange1
     {

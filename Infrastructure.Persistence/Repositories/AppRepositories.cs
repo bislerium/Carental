@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class Repositories: IRepositories
+    public class AppRepositories : IRepositories
     {
         private protected readonly AppDBContext _dbContext;
 
@@ -13,7 +13,7 @@ namespace Infrastructure.Persistence.Repositories
         private IDiscountOfferRepository? _discountOfferRepository;
         private ICustomerRepository? _customerRepository;
 
-        public Repositories(AppDBContext dbContext)
+        public AppRepositories(AppDBContext dbContext)
         {
             _dbContext = dbContext;
         }

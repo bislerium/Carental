@@ -1,4 +1,7 @@
-﻿using Domain.UnitOfWork;
+﻿using Domain.Repositories;
+using Domain.UnitOfWork;
+using Infrastructure.Persistence.Repositories;
+using Infrastructure.Persistence.UnitOfWork;
 using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Persistence
@@ -12,7 +15,8 @@ namespace Infrastructure.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("DomainDB"));
             });
 
-            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+            services.AddScoped<IRepositories, AppRepositories>();
+            services.AddScoped<IUnitOfWork, AppUnitOfWork>();
         }
     }
 }
