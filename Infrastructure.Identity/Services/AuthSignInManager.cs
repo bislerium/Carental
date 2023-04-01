@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity.Services
 {
-    internal class AuthSignInManager : IAuthSignInManager
+    internal class AuthSignInManager : ISignInManager
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;

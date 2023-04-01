@@ -13,9 +13,9 @@ namespace Application.Features.Account.Commands.CreateAccount
             _unitOfWork = unitOfWork;
         }
 
-        public Task<Result> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Result.Ok();
         }
     }
 }

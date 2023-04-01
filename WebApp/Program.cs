@@ -1,6 +1,7 @@
 using Configuration;
 using Infrastructure.Persistence;
 using Infrastructure.Identity;
+using Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Configuration.AddConfiguration();
 
 builder.Services.AddInfrastructurePersistence(builder.Configuration);
 builder.Services.AddInfrastructureIdentity(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
 builder.Services.AddControllersWithViews();
 

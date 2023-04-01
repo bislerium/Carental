@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity.Services
 {
-    internal class AuthUserManager : IAuthUserManager
+    internal class AuthUserManager : IUserManager
     {
         private UserManager<AppUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;

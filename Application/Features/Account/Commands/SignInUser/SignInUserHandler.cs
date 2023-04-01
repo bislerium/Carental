@@ -12,9 +12,9 @@ namespace Application.Features.Account.Commands.SignInUser
 {
     internal class SignInUserHandler : ICommandHandler<SignInUserCommand, AuthSignInResult>
     {
-        private readonly IAuthSignInManager _authSignInManager;
+        private readonly ISignInManager _authSignInManager;
 
-        public SignInUserHandler(IAuthSignInManager authSignInManager)
+        public SignInUserHandler(ISignInManager authSignInManager)
         {
             _authSignInManager = authSignInManager;
         }

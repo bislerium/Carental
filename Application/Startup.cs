@@ -15,10 +15,11 @@ namespace Application
 
             services.AddValidatorsFromAssembly(currentAssembly);
 
-            services.AddMediatR(configuration => { 
+            services.AddMediatR(configuration =>
+            {
                 configuration.RegisterServicesFromAssembly(currentAssembly);
                 configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-                configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));            
+                configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             });
 
             return services;

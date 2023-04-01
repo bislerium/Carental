@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Configuration
 {
@@ -6,14 +8,22 @@ namespace Configuration
     {
         public static IConfigurationBuilder AddConfiguration(this IConfigurationBuilder configurationBuilder)
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configurations"))
-                .AddJsonFile("ConnectionStrings.json", optional: false, reloadOnChange: true)
-                .Build();
-
-            configurationBuilder.AddConfiguration(configuration);
-
+            configurationBuilder.AddConfiguration(GetConfiguration());
             return configurationBuilder;
+        }
+
+        private static IConfiguration GetConfiguration()
+        {
+            string BaseConfigurationDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configurations");
+
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+
+            string[] jsonFiles = Directory.GetFiles(BaseConfigurationDirectory, "*.json");
+            foreach (string filePath in jsonFiles)
+            {
+                configurationBuilder.AddJsonFile(filePath, optional: false, reloadOnChange: true);
+            }           
+            return configurationBuilder.Build();
         }
     }
 }
