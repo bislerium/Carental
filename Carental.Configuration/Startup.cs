@@ -6,7 +6,7 @@ namespace Carental.Configuration
 {
     public static class Startup
     {
-        public static IConfigurationBuilder AddConfiguration(this IConfigurationBuilder configurationBuilder)
+        public static IConfigurationBuilder AddConfigurations(this IConfigurationBuilder configurationBuilder)
         {
             #region New IConfiguration
             IConfigurationBuilder newConfigurationBuilder = new ConfigurationBuilder();

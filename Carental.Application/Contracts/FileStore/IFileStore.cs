@@ -1,6 +1,6 @@
 ﻿namespace Carental.Application.Interfaces.File
 {
-    public interface IFileProvider
+    public interface IFileStore
     {
         Stream Read(string path);
 

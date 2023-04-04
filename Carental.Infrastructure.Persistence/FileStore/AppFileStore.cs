@@ -2,7 +2,7 @@
 
 namespace Carental.Infrastructure.Persistence.FileProviders
 {
-    internal class FileProvider : IFileProvider
+    internal class AppFileStore : IFileStore
     {
         private readonly string _rootpath;
 

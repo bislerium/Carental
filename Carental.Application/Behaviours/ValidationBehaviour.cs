@@ -17,12 +17,15 @@ namespace Carental.Application.Behaviours
             {
                 var context = new ValidationContext<TRequest>(request);
 
-                var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
-                var validationFailures = validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
+                var validationFailures = _validators
+                    .Select(v => v.Validate(context))
+                    .SelectMany(r => r.Errors)
+                    .Where(f => f != null)
+                    .ToList();
 
                 if (validationFailures.Count != 0)
                 {
-                    throw new FluentValidation.ValidationException(validationFailures);
+                    throw new ValidationException(validationFailures);
                 }
             }
             return await next();

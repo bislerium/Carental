@@ -18,14 +18,9 @@ namespace Carental.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
             builder
-                .HasOne(r => r.CarInventory)
+                .HasOne(r => r.CarInventory)               
                 .WithMany(i => i.Rentals)
                 .HasForeignKey(x => x.CarInventoryId);
-
-            builder
-                .HasOne(r => r.Customer)
-                .WithMany(c => c.CarRentals)
-                .HasForeignKey(r => r.CustomerId);
 
             builder.Property(x => x.RequestDate)
                 .IsRequired()

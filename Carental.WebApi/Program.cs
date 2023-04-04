@@ -6,7 +6,7 @@ using Carental.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Configuration.AddConfiguration();
+builder.Configuration.AddConfigurations();
 
 
 builder.Services.AddConfigurationOptions(builder.Configuration);

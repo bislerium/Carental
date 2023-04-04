@@ -1,10 +1,5 @@
 ﻿using Carental.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Carental.Infrastructure.Persistence.Configurations
 {
@@ -15,9 +10,9 @@ namespace Carental.Infrastructure.Persistence.Configurations
             builder.HasKey(x => x.Id);
 
             builder
-                .HasOne(c => c.User)
-                .WithOne()
-                .HasForeignKey<Customer>(c => c.Id);
+                .HasMany(c => c.CarRentals)
+                .WithOne(r => r.Customer)                
+                .HasForeignKey(r => r.CustomerId);
         }
     }
 }
