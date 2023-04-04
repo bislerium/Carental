@@ -1,0 +1,10 @@
+{
+  "Smtp": {
+    "Server": "smtp.gmail.com",
+    "Port": "56",
+    "From": "bishalgc124@gmai.com",
+    "Username": "bishalgc124@gmail.com",
+    "Password": "Abcd@1234",
+    "IsSsl": false
+  }
+}

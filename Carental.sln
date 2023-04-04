@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{A6747F9F-D548-44FA-BB29-93D4DBA7063E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carental.Domain", "Carental.Domain\Carental.Domain.csproj", "{A6747F9F-D548-44FA-BB29-93D4DBA7063E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{F2D06A62-7CD8-4F06-B4B1-677A696E85AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carental.Application", "Carental.Application\Carental.Application.csproj", "{F2D06A62-7CD8-4F06-B4B1-677A696E85AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Persistence", "Infrastructure.Persistence\Infrastructure.Persistence.csproj", "{C139F317-7AFE-4DAD-973F-5457C4CCD00D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carental.Infrastructure.Persistence", "Carental.Infrastructure.Persistence\Carental.Infrastructure.Persistence.csproj", "{C139F317-7AFE-4DAD-973F-5457C4CCD00D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Mailing", "Infrastructure.Mailing\Infrastructure.Mailing.csproj", "{8158DA81-0A82-4C47-97AC-3ED2B2C94625}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carental.Infrastructure.Mailing", "Carental.Infrastructure.Mailing\Carental.Infrastructure.Mailing.csproj", "{8158DA81-0A82-4C47-97AC-3ED2B2C94625}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Identity", "Infrastructure.Identity\Infrastructure.Identity.csproj", "{B3CF6668-DEB9-4CA9-A414-708CE8F15479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carental.Infrastructure.Identity", "Carental.Infrastructure.Identity\Carental.Infrastructure.Identity.csproj", "{B3CF6668-DEB9-4CA9-A414-708CE8F15479}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Configuration", "Configuration\Configuration.csproj", "{BC44938A-E251-4362-8FB8-2935F4514B3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carental.Configuration", "Carental.Configuration\Carental.Configuration.csproj", "{BC44938A-E251-4362-8FB8-2935F4514B3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{1477A496-3861-484E-9893-306D4FD6B4D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carental.WebApi", "Carental.WebApi\Carental.WebApi.csproj", "{1477A496-3861-484E-9893-306D4FD6B4D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
