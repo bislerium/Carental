@@ -1,18 +1,14 @@
-﻿using System.Text.Json;
+﻿using Carental.Application.DTOs.Error;
 
 namespace Carental.Application.Exceptions
 {
-    public class DetailException: Exception
+    public class DetailException : Exception
     {
-        public readonly IDictionary<string, string[]> _Errors;
+        public readonly Errors errors;
 
-        public IDictionary<string, string[]> Errors { get => _Errors; }
+        public Errors Errors { get => errors; }
 
-        public DetailException(string message): base(message) => _Errors = new Dictionary<string, string[]>();
+        public DetailException(string message, Errors errors) : base(message) => this.errors = errors;
 
-        public DetailException(string message, IDictionary<string, string[]> errors): base(message)
-        {
-            _Errors = errors;
-        }
     }
 }

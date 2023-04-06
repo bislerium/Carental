@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Carental.Application.DTOs.Error;
+using Microsoft.AspNetCore.Identity;
 
 namespace Carental.Infrastructure.Identity.Extensions
 {
     public static class IdentityExtensions
     {
-        public static void ToErrorDictionary(this IEnumerable<IdentityError> @this, out Dictionary<string, string[]> dictionary) 
+        public static void ToErrors(this IEnumerable<IdentityError> @this, out Errors errors) 
         {
-            dictionary = new Dictionary<string, string[]>();
+            errors = new Errors();
+
             foreach (IGrouping<string, IdentityError> x in @this.GroupBy(x => x.Code).ToArray())
             {
+                
                 string[] values = x.Select(x => x.Description).ToArray();
-                dictionary.Add(x.Key, values);
+                Error err = new (x.Key, values);
+                errors.Values.Add(err);
             }
         }
     }

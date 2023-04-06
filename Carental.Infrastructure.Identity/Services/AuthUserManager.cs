@@ -1,4 +1,5 @@
 ﻿using Carental.Application.Contracts.Identity;
+using Carental.Application.DTOs.Error;
 using Carental.Application.DTOs.Identity;
 using Carental.Application.Exceptions.CRUD;
 using Carental.Infrastructure.Identity.Entities;
@@ -31,16 +32,16 @@ namespace Carental.Infrastructure.Identity.Services
 
             if (!createAccountResult.Succeeded)
             {
-                createAccountResult.Errors.ToErrorDictionary(out Dictionary<string, string[]> errors);
-                throw new CreateFailedException<AppUser>(errors);
+                createAccountResult.Errors.ToErrors(out Errors errors);
+                throw new CreateFailedException(typeof(AppUser), errors);
             }
 
             IdentityResult createRoleResult = await _userManager.AddToRoleAsync(user, createAccountRequest.Role.ToString());
 
             if (!createRoleResult.Succeeded)
             {
-                createRoleResult.Errors.ToErrorDictionary(out Dictionary<string, string[]> errors);
-                throw new CreateFailedException<AppUser>(errors);
+                createRoleResult.Errors.ToErrors(out Errors errors);
+                throw new CreateFailedException(typeof(IdentityRole), errors);
             }
 
             return user.Id;

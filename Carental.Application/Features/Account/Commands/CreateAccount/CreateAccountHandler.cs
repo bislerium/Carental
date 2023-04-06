@@ -2,6 +2,7 @@
 using Carental.Application.Contracts.Identity;
 using Carental.Application.DTOs.Identity;
 using Carental.Application.DTOs.Persistence;
+using Carental.Application.Exceptions.CRUD;
 using Carental.Domain.Entities;
 using Carental.Domain.UnitOfWork;
 using FluentResults;
@@ -35,6 +36,20 @@ namespace Carental.Application.Features.Account.Commands.CreateAccount
                 _UnitOfWork.CustomerRepository.Add(customer);
                 await _UnitOfWork.SaveChangesAsync();
                 return Result.Ok();
+            }
+            catch (CreateFailedException cfex)
+            {
+                IEnumerable<IError> errors = cfex
+                    .Errors
+                    .Values
+                    .Select(x => {
+                        var error = new FluentResults.Error(x.Code);
+                        error.CausedBy(x.Messages);
+                        return error;
+                        }
+                    )
+                    .ToList();
+                return Result.Fail(errors);
             }
             catch (Exception ex)
             {

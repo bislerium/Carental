@@ -28,7 +28,7 @@ namespace Carental.WebApi.Controllers
             Result result = await _mediator.Send(command);
             return result.IsSuccess 
                 ? CreatedAtAction(nameof(WeatherForecastController.Get), new { }) 
-                : BadRequest(result.Errors);
+                : BadRequest(result.Reasons);
         }
     }
 }
