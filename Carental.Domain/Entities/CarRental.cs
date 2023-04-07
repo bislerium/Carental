@@ -10,11 +10,11 @@ namespace Carental.Domain.Entities
 {
     public class CarRental: BaseAuditableEntity
     {
-        public int CustomerId { get; set; }
+        public string CustomerId { get; set; } = null!;
 
         public Customer Customer { get; set; } = null!;
 
-        public int CarInventoryId { get; set; }
+        public string CarInventoryId { get; set; } = null!;
 
         public CarInventory CarInventory { get; set; } = null!;
 

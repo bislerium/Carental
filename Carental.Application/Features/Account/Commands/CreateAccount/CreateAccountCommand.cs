@@ -4,5 +4,5 @@ using Carental.Application.DTOs.Persistence;
 
 namespace Carental.Application.Features.Account.Commands.CreateAccount
 {
-    public sealed record CreateAccountCommand(CreateAccountRequest CreateAccountRequest, CreateCustomerRequest CreateCustomerRequest) : ICommand;
+    public sealed record CreateAccountCommand(CreateCustomerAccountRequest CreateCustomerAccountRequest) : ICommand;
 }

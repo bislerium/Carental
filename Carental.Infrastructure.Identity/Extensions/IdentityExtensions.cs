@@ -5,9 +5,9 @@ namespace Carental.Infrastructure.Identity.Extensions
 {
     public static class IdentityExtensions
     {
-        public static void ToErrors(this IEnumerable<IdentityError> @this, out Errors errors) 
+        public static void ToErrors(this IEnumerable<IdentityError> @this, String MessageTitle, out Errors errors) 
         {
-            errors = new Errors();
+            errors = new Errors(MessageTitle);
 
             foreach (IGrouping<string, IdentityError> x in @this.GroupBy(x => x.Code).ToArray())
             {

@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Persistence.Migrations
+namespace Carental.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230328085940_initial")]
+    [Migration("20230407041954_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -25,13 +25,11 @@ namespace Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Car", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.Car", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CarType")
                         .HasColumnType("int");
@@ -76,11 +74,11 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Cars");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CarDamage", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.CarDamage", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Charge")
                         .HasColumnType("int");
@@ -124,11 +122,11 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("CarDamage");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CarInventory", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.CarInventory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -153,19 +151,18 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("CarInventory");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CarRental", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.CarRental", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ApprovalStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("CarInventoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("CarInventoryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -173,8 +170,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsCancelled")
                         .HasColumnType("bit");
@@ -200,10 +198,10 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("CarRental");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.Customer", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -215,14 +213,20 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -230,13 +234,11 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("Domain.Entities.DiscountOffer", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.DiscountOffer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -272,62 +274,37 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("DiscountOffer");
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.CarDamage", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CarDamage", b =>
-                {
-                    b.HasOne("Domain.Entities.CarRental", "Rental")
+                    b.HasOne("Carental.Domain.Entities.CarRental", "Rental")
                         .WithOne("CarDamage")
-                        .HasForeignKey("Domain.Entities.CarDamage", "Id")
+                        .HasForeignKey("Carental.Domain.Entities.CarDamage", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Rental");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CarInventory", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.CarInventory", b =>
                 {
-                    b.HasOne("Domain.Entities.Car", "Car")
+                    b.HasOne("Carental.Domain.Entities.Car", "Car")
                         .WithOne("CarInventory")
-                        .HasForeignKey("Domain.Entities.CarInventory", "Id")
+                        .HasForeignKey("Carental.Domain.Entities.CarInventory", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Car");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CarRental", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.CarRental", b =>
                 {
-                    b.HasOne("Domain.Entities.CarInventory", "CarInventory")
+                    b.HasOne("Carental.Domain.Entities.CarInventory", "CarInventory")
                         .WithMany("Rentals")
                         .HasForeignKey("CarInventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Customer", "Customer")
+                    b.HasOne("Carental.Domain.Entities.Customer", "Customer")
                         .WithMany("CarRentals")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -338,34 +315,23 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Customer", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Car", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.Car", b =>
                 {
                     b.Navigation("CarInventory")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.CarInventory", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.CarInventory", b =>
                 {
                     b.Navigation("Rentals");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CarRental", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.CarRental", b =>
                 {
                     b.Navigation("CarDamage");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
+            modelBuilder.Entity("Carental.Domain.Entities.Customer", b =>
                 {
                     b.Navigation("CarRentals");
                 });

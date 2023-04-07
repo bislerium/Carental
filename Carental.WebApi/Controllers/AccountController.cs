@@ -3,6 +3,7 @@ using Carental.Application.DTOs.Persistence;
 using Carental.Application.Features.Account.Commands.CreateAccount;
 using FluentResults;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi;
 using WebApi.Controllers;
@@ -24,10 +25,10 @@ namespace Carental.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(CreateCustomerAccountRequest createCustomerAccountRequest) 
         {
-            CreateAccountCommand command = new(createCustomerAccountRequest.CreateAccountRequest, createCustomerAccountRequest.CreateCustomerRequest);
-            Result result = await _mediator.Send(command);
+            CreateAccountCommand command = new(createCustomerAccountRequest);
+            Result result = await _mediator.Send(command);            
             return result.IsSuccess 
-                ? CreatedAtAction(nameof(WeatherForecastController.Get), new { }) 
+                ? Ok("User successfully regustered!")
                 : BadRequest(result.Reasons);
         }
     }

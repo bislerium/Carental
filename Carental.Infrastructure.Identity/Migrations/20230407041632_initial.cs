@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Infrastructure.Identity.Migrations
+namespace Carental.Infrastructure.Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class datachange1 : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -163,15 +163,15 @@ namespace Infrastructure.Identity.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "e65a3dfc-8509-4552-a814-ccd9df889670", "0650c348-a8a2-448a-861c-b696a0861423", "Admin", "ADMIN" },
-                    { "e65a3dfc-8509-4552-a814-ccd9df889671", "8d963f92-f158-4622-bdf9-2ae20702d27b", "Staff", "STAFF" },
-                    { "e65a3dfc-8509-4552-a814-ccd9df889672", "0caab21a-a8ca-4c51-9fd6-bc1a42f2eb66", "Customer", "CUSTOMER" }
+                    { "e65a3dfc-8509-4552-a814-ccd9df889670", "8c4a9661-060e-4ec4-9bd5-3235c1882fb5", "Admin", "ADMIN" },
+                    { "e65a3dfc-8509-4552-a814-ccd9df889671", "02067fa2-7417-4592-ad8b-4434e6f09756", "Staff", "STAFF" },
+                    { "e65a3dfc-8509-4552-a814-ccd9df889672", "4ceb54f6-a951-49c4-a5da-f865a51f3286", "Customer", "CUSTOMER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "0de77141-d6ea-4245-a54b-559493e97c37", 0, "2b533ef8-51f9-4160-93e3-98f149f0c8fa", null, false, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEOqMwXhshJoj7ITYYMkzrTreCvIiYpjxtUXuj+iBH4yK8uEZU8XXnkdwJCnMvzh1fw==", null, false, "e85a1e35-f957-4c0f-be5a-e89973596a10", false, "admin" });
+                values: new object[] { "0de77141-d6ea-4245-a54b-559493e97c37", 0, "ed2d5dac-11ee-4181-80e3-07c09fd0a7a5", null, false, false, null, null, "ADMIN", "AQAAAAIAAYagAAAAEK0F0MNcEgX7uoLJFuUs0WtKee4MfR0zhHk2amyyk0qaRiG7OUJvHsyZ+xSWsifsSg==", null, false, "859183fa-82d7-4ec8-ad43-170340e266cd", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

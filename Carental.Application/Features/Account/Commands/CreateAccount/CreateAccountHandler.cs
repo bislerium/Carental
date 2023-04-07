@@ -23,8 +23,8 @@ namespace Carental.Application.Features.Account.Commands.CreateAccount
 
         public async Task<Result> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
-            CreateAccountRequest createAccountRequest = request.CreateAccountRequest;
-            CreateCustomerRequest createCustomerRequest = request.CreateCustomerRequest;
+            CreateAccountRequest createAccountRequest = request.CreateCustomerAccountRequest.Adapt<CreateAccountRequest>();
+            CreateCustomerRequest createCustomerRequest = request.CreateCustomerAccountRequest.Adapt<CreateCustomerRequest>();
 
             try
             {
@@ -34,22 +34,17 @@ namespace Carental.Application.Features.Account.Commands.CreateAccount
                 customer.Id = accountId;
 
                 _UnitOfWork.CustomerRepository.Add(customer);
-                await _UnitOfWork.SaveChangesAsync();
+                await _UnitOfWork.SaveChangesAsync(cancellationToken);
                 return Result.Ok();
             }
             catch (CreateFailedException cfex)
             {
-                IEnumerable<IError> errors = cfex
-                    .Errors
-                    .Values
-                    .Select(x => {
-                        var error = new FluentResults.Error(x.Code);
-                        error.CausedBy(x.Messages);
-                        return error;
-                        }
-                    )
-                    .ToList();
-                return Result.Fail(errors);
+                var error = new Error(cfex.Errors.Title);
+                foreach (var e in cfex.Errors.Values)
+                {
+                    error.WithMetadata(e.Code, e.Messages);
+                }                
+                return Result.Fail(error);
             }
             catch (Exception ex)
             {

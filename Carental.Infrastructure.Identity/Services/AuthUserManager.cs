@@ -32,7 +32,8 @@ namespace Carental.Infrastructure.Identity.Services
 
             if (!createAccountResult.Succeeded)
             {
-                createAccountResult.Errors.ToErrors(out Errors errors);
+                string messageTitle = "User creation failed!";
+                createAccountResult.Errors.ToErrors(messageTitle, out Errors errors);
                 throw new CreateFailedException(typeof(AppUser), errors);
             }
 
@@ -40,7 +41,8 @@ namespace Carental.Infrastructure.Identity.Services
 
             if (!createRoleResult.Succeeded)
             {
-                createRoleResult.Errors.ToErrors(out Errors errors);
+                string messageTitle = "Role assignment failed!";
+                createRoleResult.Errors.ToErrors(messageTitle, out Errors errors);
                 throw new CreateFailedException(typeof(IdentityRole), errors);
             }
 

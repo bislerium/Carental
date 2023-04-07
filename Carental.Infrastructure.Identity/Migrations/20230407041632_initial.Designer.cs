@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Identity.Migrations
+namespace Carental.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityDBContext))]
-    [Migration("20230329084659_datachange1")]
-    partial class datachange1
+    [Migration("20230407041632_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Infrastructure.Identity.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Infrastructure.Identity.Entities.AppUser", b =>
+            modelBuilder.Entity("Carental.Infrastructure.Identity.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -94,13 +94,13 @@ namespace Infrastructure.Identity.Migrations
                         {
                             Id = "0de77141-d6ea-4245-a54b-559493e97c37",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2b533ef8-51f9-4160-93e3-98f149f0c8fa",
+                            ConcurrencyStamp = "ed2d5dac-11ee-4181-80e3-07c09fd0a7a5",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOqMwXhshJoj7ITYYMkzrTreCvIiYpjxtUXuj+iBH4yK8uEZU8XXnkdwJCnMvzh1fw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK0F0MNcEgX7uoLJFuUs0WtKee4MfR0zhHk2amyyk0qaRiG7OUJvHsyZ+xSWsifsSg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e85a1e35-f957-4c0f-be5a-e89973596a10",
+                            SecurityStamp = "859183fa-82d7-4ec8-ad43-170340e266cd",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -136,21 +136,21 @@ namespace Infrastructure.Identity.Migrations
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889670",
-                            ConcurrencyStamp = "0650c348-a8a2-448a-861c-b696a0861423",
+                            ConcurrencyStamp = "8c4a9661-060e-4ec4-9bd5-3235c1882fb5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889671",
-                            ConcurrencyStamp = "8d963f92-f158-4622-bdf9-2ae20702d27b",
+                            ConcurrencyStamp = "02067fa2-7417-4592-ad8b-4434e6f09756",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         },
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889672",
-                            ConcurrencyStamp = "0caab21a-a8ca-4c51-9fd6-bc1a42f2eb66",
+                            ConcurrencyStamp = "4ceb54f6-a951-49c4-a5da-f865a51f3286",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -280,7 +280,7 @@ namespace Infrastructure.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.Entities.AppUser", null)
+                    b.HasOne("Carental.Infrastructure.Identity.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -289,7 +289,7 @@ namespace Infrastructure.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.Entities.AppUser", null)
+                    b.HasOne("Carental.Infrastructure.Identity.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -304,7 +304,7 @@ namespace Infrastructure.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Identity.Entities.AppUser", null)
+                    b.HasOne("Carental.Infrastructure.Identity.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -313,7 +313,7 @@ namespace Infrastructure.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.Entities.AppUser", null)
+                    b.HasOne("Carental.Infrastructure.Identity.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
