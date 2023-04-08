@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Mappings\**" />
+    <EmbeddedResource Remove="Mappings\**" />
+    <None Remove="Mappings\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Features\Account\Queries\" />
-    <Folder Include="Features\Account\Commands\SignOutUser\" />
-    <Folder Include="Mappings\" />
   </ItemGroup>
 
   <ItemGroup>

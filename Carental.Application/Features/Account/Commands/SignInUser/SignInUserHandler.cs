@@ -1,11 +1,12 @@
 ﻿using Carental.Application.Abstractions.CQRS.Command;
 using Carental.Application.Contracts.Identity;
 using Carental.Application.Enums;
+using Carental.Application.Extensions;
 using FluentResults;
 
 namespace Carental.Application.Features.Account.Commands.SignInUser
 {
-    internal class SignInUserHandler : ICommandHandler<SignInUserCommand, AuthSignInResult>
+    internal class SignInUserHandler : ICommandHandler<SignInUserCommand>
     {
         private readonly ISignInManager _authSignInManager;
 
@@ -14,9 +15,24 @@ namespace Carental.Application.Features.Account.Commands.SignInUser
             _authSignInManager = authSignInManager;
         }
 
-        public async Task<Result<AuthSignInResult>> Handle(SignInUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(SignInUserCommand request, CancellationToken cancellationToken)
         {
-            return await _authSignInManager.SignIn(request.Request, cancellationToken);
+            try {
+                AuthSignInResult result = await _authSignInManager.SignInAsync(request.Request, cancellationToken);
+
+                if (result is AuthSignInResult.SUCCEEDED)
+                    return Result.Ok();
+
+                Error error = new("Signin Failed!");
+                error.WithMetadata(nameof(result), result.Message());
+                return Result.Fail(error);
+                
+            }
+            catch (Exception ex)
+            {
+                 return Result.Fail(ex.Message);
+            }
         }
+
     }
 }

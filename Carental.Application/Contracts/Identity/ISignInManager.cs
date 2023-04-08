@@ -5,8 +5,8 @@ namespace Carental.Application.Contracts.Identity
 {
     public interface ISignInManager
     {
-        public Task<AuthSignInResult> SignIn(SignInRequest request, CancellationToken cancellationToken);
+        public Task<AuthSignInResult> SignInAsync(SignInRequest request, CancellationToken cancellationToken);
 
-        public Task SignOut(CancellationToken cancellationToken);
+        public Task SignOutAsync(CancellationToken cancellationToken);
     }
 }

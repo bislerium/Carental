@@ -18,7 +18,7 @@ namespace Carental.Infrastructure.Identity.Services
             _userManager = userManager;
         }
 
-        public async Task<AuthSignInResult> SignIn(SignInRequest request, CancellationToken cancellationToken)
+        public async Task<AuthSignInResult> SignInAsync(SignInRequest request, CancellationToken cancellationToken)
         {
             AppUser? user = await _userManager.FindByEmailAsync(request.Email);
 
@@ -27,12 +27,12 @@ namespace Carental.Infrastructure.Identity.Services
                 throw new NotFoundException();
             }
 
-            SignInResult result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RemeberMe, request.LockOutOnFailure);
+            SignInResult result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RemeberMe, true);
 
             return Enum.Parse<AuthSignInResult>(result.ToString(), ignoreCase: true);
         }
 
-        public async Task SignOut(CancellationToken cancellationToken)
+        public async Task SignOutAsync(CancellationToken cancellationToken)
         {
             await _signInManager.SignOutAsync();
         }
