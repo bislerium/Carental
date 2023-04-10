@@ -1,15 +1,11 @@
 ﻿using Carental.Application.DTOs.Identity;
-using Carental.Application.DTOs.Persistence;
 using Carental.Application.Enums;
 using Carental.Application.Features.Account.Commands.CreateAccount;
 using Carental.Application.Features.Account.Commands.SignInUser;
 using Carental.Application.Features.Account.Commands.SignOutUser;
 using FluentResults;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using WebApi;
-using WebApi.Controllers;
 
 namespace Carental.WebApi.Controllers
 {
