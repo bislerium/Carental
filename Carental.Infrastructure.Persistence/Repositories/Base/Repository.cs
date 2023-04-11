@@ -1,89 +1,115 @@
 ﻿using Carental.Domain.Common;
 using Carental.Domain.Repositories.Base;
-using Carental.Infrastructure.Persistence.Contexts;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Carental.Infrastructure.Persistence.Repositories.Base
 {
     public class Repostiory<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, new()
     {
-        private readonly AppDBContext _dbContext;
+        private readonly AppDBContext dbContext;
 
         public Repostiory(AppDBContext dbContext)
         {
-            _dbContext = dbContext;
+            this.dbContext = dbContext;
         }
 
         public IQueryable<TEntity> Query(bool noTracking = true)
         {
-            DbSet<TEntity> entitySet = _dbContext.Set<TEntity>();
+            DbSet<TEntity> entitySet = dbContext.Set<TEntity>();
             return noTracking
-                ? entitySet.AsNoTracking().AsQueryable()
-                : entitySet.AsQueryable();
+                ? entitySet.AsNoTracking()
+                : entitySet.AsTracking();
         }
 
         public void Add(TEntity entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Added;
+            dbContext.Set<TEntity>().Attach(entity);
+            dbContext.Entry(entity).State = EntityState.Added;
         }
+
         public void Update(TEntity entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            dbContext.Set<TEntity>().Attach(entity);
+            dbContext.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(TEntity entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Deleted;
+            dbContext.Set<TEntity>().Remove(entity);
         }
 
-        public async Task<TEntity?> FindByIdAsync(string key)
+
+        public async Task<TEntity?> FindByIdAsync(string key, CancellationToken cancellationToken)
         {
-            return await _dbContext
+            return await dbContext
                 .Set<TEntity>()
-                .FindAsync(key);
+                .FindAsync(new object?[] { key }, cancellationToken: cancellationToken);
         }
 
-
-
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async IAsyncEnumerable<TEntity> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
         {
-            return await _dbContext
-                .Set<TEntity>()
-                .ToListAsync();
+            var batchSize = 100; //Fetch number of rows per database round trip. smaller batch size = number of records/rows improves memory usuage.
+            var skip = 0; // offset
+
+            while (true)
+            {
+                var entities = await dbContext.Set<TEntity>()
+                    .OrderBy(e => e.Id)
+                    .Skip(skip)
+                    .Take(batchSize)
+                    .ToListAsync(cancellationToken);
+                    
+
+                if (entities.Count == 0)
+                {
+                    yield break;
+                }
+
+                foreach (var entity in entities)
+                {
+                    yield return entity;
+                }
+
+                skip += batchSize;
+            }
         }
 
-        public Task<IEnumerable<TEntity>> Filter(Expression<Func<TEntity, bool>>? predicate, IDictionary<Expression<Func<TEntity, object>>, bool> orderBy)
+        public async IAsyncEnumerable<TEntity> FilterAsync(Expression<Func<TEntity, bool>>? predicate, IReadOnlyDictionary<Expression<Func<TEntity, object>>, bool>? orderBy, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
-            IQueryable<TEntity> collections = _dbContext.Set<TEntity>().AsNoTracking();
+            IQueryable<TEntity> collections = dbContext.Set<TEntity>().AsNoTracking();
 
-            if (predicate != null) 
+            if (predicate is not null) 
             {
                 collections = collections.Where(predicate);
             }
 
-            IOrderedQueryable<TEntity> orderedCollection = null!;
-
-            // Order the collection by the first property
-            if (orderBy.Count > 0)
+            if (orderBy is not null && orderBy.Count > 0)
             {
-                var pair = orderBy.ElementAt(0);
-                orderedCollection = pair.Value 
+                var pair = orderBy.First();
+                var orderedCollection = pair.Value
                     ? collections.OrderBy(pair.Key)
                     : collections.OrderByDescending(pair.Key);
-            }
 
-            // Then order the collection by any additional properties
-            for (int i = 1; i < orderBy.Keys.Count; i++)
-            {
-                var pair = orderBy.ElementAt(i);
-                orderedCollection = pair.Value
-                    ? orderedCollection.ThenBy(pair.Key)
-                    : orderedCollection.ThenByDescending(pair.Key);
-            }
+                for (int i = 1; i < orderBy.Count; i++)
+                {
+                    pair = orderBy.ElementAt(i);
+                    orderedCollection = pair.Value
+                        ? orderedCollection.ThenBy(pair.Key)
+                        : orderedCollection.ThenByDescending(pair.Key);
+                }
 
-            foreach (TEntity e in orderedCollection) 
+                await foreach (var entity in orderedCollection.AsAsyncEnumerable().WithCancellation(cancellationToken))
+                {
+                    yield return entity;
+                }
+            }
+            else
             {
-                yield return e;
+                await foreach (var entity in collections.AsAsyncEnumerable().WithCancellation(cancellationToken))
+                {
+                    yield return entity;
+                }
             }
         }
     }
