@@ -15,22 +15,22 @@ namespace Carental.Application.Features.Car.Commands.DeleteCar
 
         public async Task<Result> Handle(DeleteCarCommand request, CancellationToken cancellationToken)
         {
-            Domain.Entities.Car? car = unitOfWork.CarRepository.Query().FirstOrDefault(x => x.Id.Equals(request.CarId));
+            Domain.Entities.Car? car = await unitOfWork.CarRepository.FindByIdAsync(request.CarId);
+
+            if (car is null) 
+            {
+                Result.Fail(new Error("No car found wtih given ID!"));    
+            }
 
             try
             {
-                Domain.Entities.Car car = new()
-                {
-                    Id = request.CarId
-                };
-                unitOfWork.CarRepository.Delete(car);
+                unitOfWork.CarRepository.Delete(car!);
+                return Result.Ok();
             }
             catch (Exception)
             {
-                return Result.Fail(new Error("Cannot Delete the "))
-            }
-
-            
+                return Result.Fail(new Error("Cannot Delete the "));
+            }            
         }
     }
 }

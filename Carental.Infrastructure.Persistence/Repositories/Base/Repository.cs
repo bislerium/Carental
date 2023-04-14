@@ -75,7 +75,7 @@ namespace Carental.Infrastructure.Persistence.Repositories.Base
             }
         }
 
-        public async IAsyncEnumerable<TEntity> FilterAsync(Expression<Func<TEntity, bool>>? predicate, IReadOnlyDictionary<Expression<Func<TEntity, object>>, bool>? orderBy, [EnumeratorCancellation] CancellationToken cancellationToken)
+        public async IAsyncEnumerable<TEntity> SortAsync(Expression<Func<TEntity, bool>>? predicate, IReadOnlyDictionary<Expression<Func<TEntity, object>>, bool>? orderBy, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
             IQueryable<TEntity> collections = dbContext.Set<TEntity>().AsNoTracking();
 
