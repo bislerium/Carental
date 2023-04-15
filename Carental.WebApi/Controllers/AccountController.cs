@@ -11,11 +11,11 @@ namespace Carental.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountsController: ControllerBase
+    public class AccountController: ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AccountsController(IMediator mediator)
+        public AccountController(IMediator mediator)
         {
             _mediator = mediator;
         }

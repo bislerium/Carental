@@ -1,26 +1,50 @@
-﻿using Carental.Application.Interfaces.File;
+﻿using Carental.Application.Exceptions;
+using Carental.Application.Interfaces.File;
+using Microsoft.AspNetCore.Http;
 
-namespace Carental.Infrastructure.Persistence.FileProviders
+namespace Carental.Infrastructure.Persistence.FileStore
 {
-    internal class AppFileStore : IFileStore
+    public class AppFileStore : IFileStore
     {
-        private readonly string _rootpath;
+        private const string MEDIA_FOLDER = "D://Media";
 
-        private const string _MEDIA_FOLDER = "Media";
-
-        public Stream Read(string path)
+        public AppFileStore()
         {
-            using FileStream stream = new(path, FileMode.Open);
-            return stream;
+            if (!Directory.Exists(MEDIA_FOLDER))
+            {
+                Directory.CreateDirectory(MEDIA_FOLDER);
+            }
         }
 
-        public string Write(Stream file, string fileName)
+        public async Task<byte[]> Read(string path)
         {
-            string newFileName = Guid.NewGuid().ToString() + Path.GetExtension(fileName);
-            string filePath = Path.Combine(_rootpath, _MEDIA_FOLDER, newFileName);
+            path = Path.Combine(MEDIA_FOLDER, path);
 
-            using FileStream stream = new FileStream(filePath, FileMode.Create);
-            file.CopyTo(stream);
+            if (!File.Exists(path))
+            {
+                throw new NotFoundException("File doesnot exist.");
+            }
+
+            byte[] fileBytes = await File.ReadAllBytesAsync(path);
+
+            return fileBytes;
+        }
+
+        public async Task<string> Write(IFormFile file)
+        {
+            if (file is null || file.Length == 0)
+            {
+                throw new ArgumentException("File is required", nameof(file));
+            }
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName).ToLower();
+            var filePath = Path.Combine(MEDIA_FOLDER, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
             return filePath;
         }
     }

@@ -1,9 +1,11 @@
-﻿namespace Carental.Application.Interfaces.File
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Carental.Application.Interfaces.File
 {
     public interface IFileStore
     {
-        Stream Read(string path);
+        Task<byte[]> Read(string path);
 
-        string Write(Stream file, string filename);
+        Task<string> Write(IFormFile file);
     }
 }

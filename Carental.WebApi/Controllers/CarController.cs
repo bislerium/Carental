@@ -12,7 +12,7 @@ namespace Carental.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CarController : Controller
+    public class CarController : ControllerBase
     {
 
         public IMediator mediator;
