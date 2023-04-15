@@ -1,10 +1,10 @@
-﻿using Carental.Domain.Common;
-using Carental.Domain.Enums;
+﻿using Carental.Domain.Enums;
 
-namespace Carental.Domain.Entities
+namespace Carental.Application.DTOs.Persistence.Car
 {
-    public class Car: BaseAuditableEntity
+    public class CarDetailResponse
     {
+        public string Id { get; set; } = null!;
         public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
         public DateOnly Year { get; set; }
@@ -12,7 +12,7 @@ namespace Carental.Domain.Entities
         public int Seats { get; set; }
         public CarType CarType { get; set; }
         public FuelType FuelType { get; set; }
-
-        public CarInventory? CarInventory { get; set; } = null!;
+        public int RentalRate { get; set; }
+        public bool IsRented { get; set; }
     }
 }

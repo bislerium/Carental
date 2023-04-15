@@ -6,7 +6,7 @@ namespace Carental.Application.Features.Car.Queries.GetCars
 {
     public class GetCarsHandler : IQueryHandler<GetCarsCommand, IEnumerable<Domain.Entities.Car>>
     {
-        public IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
         public GetCarsHandler(IUnitOfWork unitOfWork)
         {

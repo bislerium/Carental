@@ -2,6 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,visualstudiocode
 
 ### VisualStudioCode ###
+.vscode
+.idea
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

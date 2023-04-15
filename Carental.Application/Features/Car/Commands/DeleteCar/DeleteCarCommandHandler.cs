@@ -25,6 +25,7 @@ namespace Carental.Application.Features.Car.Commands.DeleteCar
             try
             {
                 unitOfWork.CarRepository.Delete(car!);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
                 return Result.Ok();
             }
             catch (Exception)

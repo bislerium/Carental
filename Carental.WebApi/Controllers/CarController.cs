@@ -1,12 +1,12 @@
 ﻿using Carental.Application.DTOs.Persistence.Car;
 using Carental.Application.Features.Car.Commands.CreateCar;
 using Carental.Application.Features.Car.Commands.DeleteCar;
+using Carental.Application.Features.Car.Queries.GetCarDetailsById;
 using Carental.Application.Features.Car.Queries.GetCars;
 using Carental.Domain.Entities;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
 namespace Carental.WebApi.Controllers
 {
@@ -22,7 +22,7 @@ namespace Carental.WebApi.Controllers
             this.mediator = mediator;
         }
 
-        [Route("[action]")]
+        [Route("/[controller]s")]
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             GetCarsCommand command = new();
@@ -32,20 +32,42 @@ namespace Carental.WebApi.Controllers
                 : BadRequest();
         }
 
-        [Route("[action]")]
+
+        [Route("{id:guid}")]
+        [HttpGet]
+        public async Task<IActionResult> Detail([FromRoute] string id)
+        {
+            GetCarDetailsByIdCommand command = new(id);
+            Result<CarDetailResponse> result = await mediator.Send(command);
+            return result.IsSuccess
+                ? Ok(result.Value)
+                : BadRequest(result.Reasons);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(CreateCarRequest createCarRequest)
         {
             CreateCarCommand command = new(createCarRequest);
-            Result result = await mediator.Send(command);
+            Result<Car> result = await mediator.Send(command);
             return result.IsSuccess
-                ? Ok()
+                ? CreatedAtAction(nameof(Detail),new { id = result.Value.Id }, result.Value)
                 : BadRequest();
         }
 
-        [Route("[action]")]
-        [HttpPost]
-        public async Task<ActionResult> Delete(string id)
+        [HttpPut]
+        public async Task<ActionResult> Update(CreateCarRequest createCarRequest)
+        {
+            CreateCarCommand command = new(createCarRequest);
+            Result<Car> result = await mediator.Send(command);
+            return result.IsSuccess
+                ? CreatedAtAction(nameof(Detail), new { id = result.Value.Id }, result.Value)
+                : BadRequest();
+        }
+
+
+        [Route("{id:guid}")]
+        [HttpDelete]
+        public async Task<ActionResult> Delete([FromRoute] string id)
         {
             DeleteCarCommand command = new(id);
             Result result = await mediator.Send(command);
