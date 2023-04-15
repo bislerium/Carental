@@ -5,7 +5,7 @@ namespace Carental.Domain.Entities
 {
     public class CarDamage: BaseAuditableEntity
     {
-        public CarRental Rental { get; set; } = null!;
+        public virtual CarRental Rental { get; set; } = null!;
 
         public string DamageDescription { get; set; } = null!;
 

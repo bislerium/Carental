@@ -12,11 +12,11 @@ namespace Carental.Domain.Entities
     {
         public string CustomerId { get; set; } = null!;
 
-        public Customer Customer { get; set; } = null!;
+        public virtual Customer Customer { get; set; } = null!;
 
         public string CarInventoryId { get; set; } = null!;
 
-        public CarInventory CarInventory { get; set; } = null!;
+        public virtual CarInventory CarInventory { get; set; } = null!;
 
         public DateOnly RequestDate { get; set; }
 

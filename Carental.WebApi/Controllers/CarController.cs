@@ -26,7 +26,7 @@ namespace Carental.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             GetCarsCommand command = new();
-            Result<IEnumerable<Car>> result = await mediator.Send(command);
+            Result<IEnumerable<CarSummaryResponse>> result = await mediator.Send(command);
             return result.IsSuccess
                 ? Ok(result.Value)
                 : BadRequest();
@@ -48,7 +48,7 @@ namespace Carental.WebApi.Controllers
         public async Task<ActionResult> Create(CreateCarRequest createCarRequest)
         {
             CreateCarCommand command = new(createCarRequest);
-            Result<Car> result = await mediator.Send(command);
+            Result<CarDetailResponse> result = await mediator.Send(command);
             return result.IsSuccess
                 ? CreatedAtAction(nameof(Detail),new { id = result.Value.Id }, result.Value)
                 : BadRequest();
@@ -58,7 +58,7 @@ namespace Carental.WebApi.Controllers
         public async Task<ActionResult> Update(CreateCarRequest createCarRequest)
         {
             CreateCarCommand command = new(createCarRequest);
-            Result<Car> result = await mediator.Send(command);
+            Result<CarDetailResponse> result = await mediator.Send(command);
             return result.IsSuccess
                 ? CreatedAtAction(nameof(Detail), new { id = result.Value.Id }, result.Value)
                 : BadRequest();

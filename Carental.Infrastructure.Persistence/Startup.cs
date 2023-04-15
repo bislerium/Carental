@@ -13,7 +13,7 @@ namespace Carental.Infrastructure.Persistence
         {
             services.AddDbContext<AppDBContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DomainDB"));
+                options.UseSqlServer(configuration.GetConnectionString("DomainDB"));                
             });
 
             services.AddScoped<IRepositories, AppRepositories>();

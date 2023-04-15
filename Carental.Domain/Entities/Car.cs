@@ -13,6 +13,6 @@ namespace Carental.Domain.Entities
         public CarType CarType { get; set; }
         public FuelType FuelType { get; set; }
 
-        public CarInventory? CarInventory { get; set; } = null!;
+        public virtual CarInventory CarInventory { get; set; } = null!;
     }
 }

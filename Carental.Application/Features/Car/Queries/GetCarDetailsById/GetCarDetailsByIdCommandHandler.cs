@@ -27,8 +27,8 @@ namespace Carental.Application.Features.Car.Queries.GetCarDetailsById
 
             CarDetailResponse carDetail = car.Adapt<CarDetailResponse>();
 
-            carDetail.RentalRate = car.CarInventory?.RentalRate ?? 0;
-            carDetail.IsRented = car.CarInventory?.IsRented ?? false;
+            carDetail.RentalRate = car.CarInventory.RentalRate;
+            carDetail.IsRented = car.CarInventory.IsRented;
 
             return Result.Ok(carDetail);
         }
