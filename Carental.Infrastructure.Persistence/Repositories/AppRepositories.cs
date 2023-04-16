@@ -13,6 +13,7 @@ namespace Carental.Infrastructure.Persistence.Repositories
         private ICarDamageRepository? _carDamageRepository;
         private IDiscountOfferRepository? _discountOfferRepository;
         private ICustomerRepository? _customerRepository;
+        private IFileRepository? _fileRepository;
 
         public AppRepositories(AppDBContext dbContext)
         {
@@ -63,6 +64,14 @@ namespace Carental.Infrastructure.Persistence.Repositories
             get
             {
                 return _discountOfferRepository ??= new DiscountOfferRepository(_dbContext);
+            }
+        }
+
+        public IFileRepository FileRepository
+        {
+            get
+            {
+                return _fileRepository ??= new FileRepository(_dbContext);
             }
         }
     }

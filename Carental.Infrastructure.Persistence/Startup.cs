@@ -1,7 +1,6 @@
 ﻿using Carental.Application.Interfaces.File;
 using Carental.Domain.Repositories;
 using Carental.Domain.UnitOfWork;
-using Carental.Infrastructure.Persistence.Contexts;
 using Carental.Infrastructure.Persistence.FileStore;
 using Carental.Infrastructure.Persistence.Repositories;
 using Carental.Infrastructure.Persistence.UnitOfWork;

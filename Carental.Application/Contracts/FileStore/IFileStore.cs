@@ -4,8 +4,8 @@ namespace Carental.Application.Interfaces.File
 {
     public interface IFileStore
     {
-        Task<byte[]> Read(string path);
+        Task<byte[]> Read(string path, CancellationToken cancellationToken = default);
 
-        Task<string> Write(IFormFile file);
+        Task<Tuple<string, string, string>> Write(IFormFile file, CancellationToken cancellationToken = default);
     }
 }

@@ -16,36 +16,30 @@ namespace Carental.Infrastructure.Persistence.FileStore
             }
         }
 
-        public async Task<byte[]> Read(string path)
+        public async Task<byte[]> Read(string path, CancellationToken cancellationToken = default)
         {
-            path = Path.Combine(MEDIA_FOLDER, path);
-
             if (!File.Exists(path))
             {
-                throw new NotFoundException("File doesnot exist.");
+                throw new NotFoundException();
             }
 
-            byte[] fileBytes = await File.ReadAllBytesAsync(path);
+            byte[] fileBytes = await File.ReadAllBytesAsync(path, cancellationToken);
 
             return fileBytes;
         }
 
-        public async Task<string> Write(IFormFile file)
+        public async Task<Tuple<string, string, string>> Write(IFormFile file, CancellationToken cancellationToken = default)
         {
-            if (file is null || file.Length == 0)
-            {
-                throw new ArgumentException("File is required", nameof(file));
-            }
-
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName).ToLower();
+            var fileId = Guid.NewGuid().ToString();
+            var fileName =  fileId + Path.GetExtension(file.FileName).ToLower();
             var filePath = Path.Combine(MEDIA_FOLDER, fileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                await file.CopyToAsync(stream);
+                await file.CopyToAsync(stream, cancellationToken);
             }
 
-            return filePath;
+            return Tuple.Create(fileId, fileName, filePath);
         }
     }
 }

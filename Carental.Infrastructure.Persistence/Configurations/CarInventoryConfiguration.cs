@@ -11,6 +11,10 @@ namespace Carental.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
+            builder.Property(i => i.RentalRate)
+                .IsRequired()
+                .HasPrecision(6, 2);
+
             builder
                 .HasOne(c => c.Car)
                 .WithOne(i => i.CarInventory)

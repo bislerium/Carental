@@ -1,4 +1,9 @@
-﻿using Carental.Application.Interfaces.File;
+﻿using Azure.Core;
+using Carental.Application.Features.File.Commands.UploadFile;
+using Carental.Application.Features.File.Queries.DownloadFile;
+using Carental.Application.Interfaces.File;
+using FluentResults;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carental.WebApi.Controllers
@@ -8,32 +13,41 @@ namespace Carental.WebApi.Controllers
     public class FileController : ControllerBase
     {
         private readonly IFileStore fileStore;
+        private IMediator mediator;
 
-        public FileController(IFileStore fileStore)
+        public FileController(IFileStore fileStore, IMediator mediator)
         {
             this.fileStore = fileStore;
+            this.mediator = mediator;
         }
 
-        //[Route("{fileName}")]
-        [HttpGet]
-        public async Task<IActionResult> Get([FromRoute] string fileName)
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Upload(IFormFile file)
         {
-            byte[] file = await fileStore.Read(fileName);
-
-            string extension = Path.GetExtension(fileName);
-            string contentType = extension.ToLower() switch
+            UploadFileCommand command = new(file);
+            Result<string> result = await mediator.Send(command);
+            if (result.IsSuccess) 
             {
-                ".jpg" => "image/jpeg",
-                ".jpeg" => "image/jpeg",
-                ".png" => "image/png",
-                ".gif" => "image/gif",
-                ".svg" => "image/svg+xml",
-                ".pdf" => "application/pdf",
-                _ => "application/octet-stream",
-            };
+                string resourceURL = Url.Action(nameof(Download), new { fileName = result.Value })!;
+                Response.Headers.Location = resourceURL;
+                return NoContent();
+            } else
+            {
+                return BadRequest(result.Reasons);
+            }
+        }
 
-            return File(file, contentType);
-            
+        [Route("{fileName}")]
+        [HttpGet]
+        public async Task<IActionResult> Download([FromRoute] string fileName)
+        {
+            DownloadFileCommand command = new(fileName);
+            Result<Tuple<byte[], string>> result = await mediator.Send(command);
+
+            return result.IsSuccess
+                ? File(result.Value.Item1, result.Value.Item2)
+                : BadRequest(result.Reasons);            
         }
     }
 }

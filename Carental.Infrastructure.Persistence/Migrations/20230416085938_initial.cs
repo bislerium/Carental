@@ -53,7 +53,7 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DiscountOffer",
+                name: "DiscountOffers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -69,15 +69,32 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiscountOffer", x => x.Id);
+                    table.PrimaryKey("PK_DiscountOffers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CarInventory",
+                name: "Files",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RentalRate = table.Column<int>(type: "int", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ByteSize = table.Column<long>(type: "bigint", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CarInventories",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RentalRate = table.Column<decimal>(type: "decimal(6,2)", precision: 6, scale: 2, nullable: false),
                     IsRented = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -86,9 +103,9 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarInventory", x => x.Id);
+                    table.PrimaryKey("PK_CarInventories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CarInventory_Cars_Id",
+                        name: "FK_CarInventories_Cars_Id",
                         column: x => x.Id,
                         principalTable: "Cars",
                         principalColumn: "Id",
@@ -96,7 +113,7 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CarRental",
+                name: "CarRentals",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -113,15 +130,15 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarRental", x => x.Id);
+                    table.PrimaryKey("PK_CarRentals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CarRental_CarInventory_CarInventoryId",
+                        name: "FK_CarRentals_CarInventories_CarInventoryId",
                         column: x => x.CarInventoryId,
-                        principalTable: "CarInventory",
+                        principalTable: "CarInventories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CarRental_Customers_CustomerId",
+                        name: "FK_CarRentals_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "Id",
@@ -129,7 +146,7 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CarDamage",
+                name: "CarDamages",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -148,23 +165,23 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarDamage", x => x.Id);
+                    table.PrimaryKey("PK_CarDamages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CarDamage_CarRental_Id",
+                        name: "FK_CarDamages_CarRentals_Id",
                         column: x => x.Id,
-                        principalTable: "CarRental",
+                        principalTable: "CarRentals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CarRental_CarInventoryId",
-                table: "CarRental",
+                name: "IX_CarRentals_CarInventoryId",
+                table: "CarRentals",
                 column: "CarInventoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CarRental_CustomerId",
-                table: "CarRental",
+                name: "IX_CarRentals_CustomerId",
+                table: "CarRentals",
                 column: "CustomerId");
         }
 
@@ -172,16 +189,19 @@ namespace Carental.Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CarDamage");
+                name: "CarDamages");
 
             migrationBuilder.DropTable(
-                name: "DiscountOffer");
+                name: "DiscountOffers");
 
             migrationBuilder.DropTable(
-                name: "CarRental");
+                name: "Files");
 
             migrationBuilder.DropTable(
-                name: "CarInventory");
+                name: "CarRentals");
+
+            migrationBuilder.DropTable(
+                name: "CarInventories");
 
             migrationBuilder.DropTable(
                 name: "Customers");

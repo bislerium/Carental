@@ -2,23 +2,30 @@
 
 namespace Carental.Domain.Entities
 {
-    internal class File: BaseAuditableEntity
+    public class File: BaseAuditableEntity
     {
 
         public string FilePath { get; set; } = null!;
 
-        public string Name { get 
+        public string FullName
+        {
+            get
             {
                 return Path.GetFileName(FilePath);
             }
         }
+        public string Name { get 
+            {
+                return Path.GetFileNameWithoutExtension(FilePath);
+            }
+        }
 
-        public string Type { get 
+        public string Extension { get 
             {
                 return Path.GetExtension(FilePath);
             } 
         }
 
-        public int ByteSize { get; set; }
+        public long ByteSize { get; set; }
     }
 }

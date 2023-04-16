@@ -18,6 +18,9 @@ namespace Carental.Infrastructure.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -116,7 +119,7 @@ namespace Carental.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarDamage");
+                    b.ToTable("CarDamages");
                 });
 
             modelBuilder.Entity("Carental.Domain.Entities.CarInventory", b =>
@@ -141,11 +144,12 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("RentalRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarInventory");
+                    b.ToTable("CarInventories");
                 });
 
             modelBuilder.Entity("Carental.Domain.Entities.CarRental", b =>
@@ -192,7 +196,7 @@ namespace Carental.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CarRental");
+                    b.ToTable("CarRentals");
                 });
 
             modelBuilder.Entity("Carental.Domain.Entities.Customer", b =>
@@ -268,7 +272,36 @@ namespace Carental.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DiscountOffer");
+                    b.ToTable("DiscountOffers");
+                });
+
+            modelBuilder.Entity("Carental.Domain.Entities.File", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<long>("ByteSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("Carental.Domain.Entities.CarDamage", b =>

@@ -8,5 +8,6 @@
         public ICarDamageRepository CarDamageRepository { get; }
         public ICustomerRepository CustomerRepository { get; }
         public IDiscountOfferRepository DiscountOfferRepository { get; }
+        public IFileRepository FileRepository { get; }
     }
 }
