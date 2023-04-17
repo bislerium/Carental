@@ -1,0 +1,3 @@
+dotnet ef migrations add initial --startup-project Carental.WebApi --project Carental.Infrastructure.Identity --context IdentityDBContext
+
+dotnet ef database update --startup-project Carental.WebApi --project Carental.Infrastructure.Identity --context IdentityDBContext

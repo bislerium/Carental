@@ -13,11 +13,13 @@ namespace Carental.WebApi.Controllers
     [Route("[controller]")]
     public class AccountController: ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator mediator;
+        private readonly IConfigurationSection jwtSection;
 
-        public AccountController(IMediator mediator)
+        public AccountController(IMediator mediator, IConfiguration configuration)
         {
-            _mediator = mediator;
+            jwtSection = configuration.GetRequiredSection("Jwt");
+            this.mediator = mediator;
         }
 
         [Route("/register")]
@@ -25,7 +27,7 @@ namespace Carental.WebApi.Controllers
         public async Task<IActionResult> Register(CreateCustomerAccountRequest createCustomerAccountRequest) 
         {
             CreateAccountCommand command = new(createCustomerAccountRequest);
-            Result result = await _mediator.Send(command);            
+            Result result = await mediator.Send(command);            
             return result.IsSuccess 
                 ? Ok("User successfully regustered!")
                 : BadRequest(result.Reasons);
@@ -36,9 +38,9 @@ namespace Carental.WebApi.Controllers
         public async Task<IActionResult> SignIn(SignInRequest signInRequest) 
         { 
             SignInUserCommand signInUserCommand = new(signInRequest);
-            Result<AuthSignInResult> result = await _mediator.Send(signInUserCommand);
+            Result<string> result = await mediator.Send(signInUserCommand);
             return result.IsSuccess
-                ? Ok()
+                ? Ok(result.Value)
                 : BadRequest(result.Reasons);
         }
 
@@ -47,7 +49,7 @@ namespace Carental.WebApi.Controllers
         public new async Task<IActionResult> SignOut()
         {
             SignOutUserCommand signOutUserCommand = new();
-            Result<AuthSignInResult> result = await _mediator.Send(signOutUserCommand);
+            Result<AuthSignInResult> result = await mediator.Send(signOutUserCommand);
             return result.IsSuccess
                 ? Ok()
                 : BadRequest(result.Reasons);

@@ -3,6 +3,7 @@ using Carental.Application.Features.Car.Commands.CreateCar;
 using Carental.Application.Features.Car.Commands.DeleteCar;
 using Carental.Application.Features.Car.Queries.GetCarDetailsById;
 using Carental.Application.Features.Car.Queries.GetCars;
+using Carental.Application.Features.Rental.Commands.RentACar;
 using Carental.Domain.Entities;
 using FluentResults;
 using MediatR;
@@ -61,6 +62,18 @@ namespace Carental.WebApi.Controllers
             Result<CarDetailResponse> result = await mediator.Send(command);
             return result.IsSuccess
                 ? CreatedAtAction(nameof(Detail), new { id = result.Value.Id }, result.Value)
+                : BadRequest();
+        }
+
+        [Route("{carId}/[action]")]
+        [HttpPost]
+        public async Task<IActionResult> Rent(string carId)
+        {
+            RentACarCommand command = new(new Application.DTOs.Persistence.Rental.RentACarRequest(carId, HttpContext.User.Identity.Name!));
+            Result result = await mediator.Send(command);
+
+            return result.IsSuccess 
+                ? Ok()
                 : BadRequest();
         }
 

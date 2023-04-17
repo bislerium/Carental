@@ -6,7 +6,7 @@ using FluentResults;
 
 namespace Carental.Application.Features.Account.Commands.SignInUser
 {
-    internal class SignInUserHandler : ICommandHandler<SignInUserCommand>
+    internal class SignInUserHandler : ICommandHandler<SignInUserCommand, string>
     {
         private readonly ISignInManager _authSignInManager;
 
@@ -15,13 +15,13 @@ namespace Carental.Application.Features.Account.Commands.SignInUser
             _authSignInManager = authSignInManager;
         }
 
-        public async Task<Result> Handle(SignInUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(SignInUserCommand request, CancellationToken cancellationToken)
         {
             try {
-                AuthSignInResult result = await _authSignInManager.SignInAsync(request.Request, cancellationToken);
+                (AuthSignInResult result, string? token) = await _authSignInManager.SignInAsync(request.Request, cancellationToken);
 
                 if (result is AuthSignInResult.SUCCEEDED)
-                    return Result.Ok();
+                    return Result.Ok(token ?? String.Empty);
 
                 Error error = new("Signin Failed!");
                 error.WithMetadata(nameof(result), result.Message());

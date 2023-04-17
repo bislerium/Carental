@@ -22,6 +22,7 @@
 
 	<ItemGroup>
 	  <None Remove="configurations\Identity.json" />
+	  <None Remove="configurations\Jwt.json" />
 	  <None Remove="configurations\smtp.json" />
 	</ItemGroup>
 

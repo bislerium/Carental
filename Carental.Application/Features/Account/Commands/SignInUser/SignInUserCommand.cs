@@ -4,5 +4,5 @@ using Carental.Application.Enums;
 
 namespace Carental.Application.Features.Account.Commands.SignInUser
 {
-    public record SignInUserCommand(SignInRequest Request) : ICommand;
+    public record SignInUserCommand(SignInRequest Request) : ICommand<string>;
 }
