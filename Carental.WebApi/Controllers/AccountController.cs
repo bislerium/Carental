@@ -5,6 +5,7 @@ using Carental.Application.Features.Account.Commands.SignInUser;
 using Carental.Application.Features.Account.Commands.SignOutUser;
 using FluentResults;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carental.WebApi.Controllers
@@ -14,11 +15,9 @@ namespace Carental.WebApi.Controllers
     public class AccountController: ControllerBase
     {
         private readonly IMediator mediator;
-        private readonly IConfigurationSection jwtSection;
 
-        public AccountController(IMediator mediator, IConfiguration configuration)
+        public AccountController(IMediator mediator)
         {
-            jwtSection = configuration.GetRequiredSection("Jwt");
             this.mediator = mediator;
         }
 
@@ -40,12 +39,12 @@ namespace Carental.WebApi.Controllers
             SignInUserCommand signInUserCommand = new(signInRequest);
             Result<string> result = await mediator.Send(signInUserCommand);
             return result.IsSuccess
-                ? Ok(result.Value)
+                ? Ok(new { token = result.Value })
                 : BadRequest(result.Reasons);
         }
 
         [Route("/signout")]
-        [HttpPost]
+        [HttpPost]        
         public new async Task<IActionResult> SignOut()
         {
             SignOutUserCommand signOutUserCommand = new();

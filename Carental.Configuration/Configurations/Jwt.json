@@ -1,12 +1,9 @@
 {
   "Jwt": {
     "Issuer": "https://localhost:7029/",
-    "Audiences": [
-      "https://localhost:7029/",
-      "http://localhost:7029/"
-    ],
+    "Audience": "https://localhost:7029/",
     "Key": "49b48ef8c24606932c4878afd15825aeda4307d7c3c5664398618dbb6327a1d8c4f708f94916af25a74038140ef7ad93da8fba7c84a3d2f70a844ef89744cc12",
-    "Skew": 5,
+    "SkewInMinutes": 5,
     "ExpiryInMinutes": 60
   }
 }

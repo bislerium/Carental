@@ -4,6 +4,7 @@ using Carental.Application.Features.File.Queries.DownloadFile;
 using Carental.Application.Interfaces.File;
 using FluentResults;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carental.WebApi.Controllers
@@ -38,8 +39,10 @@ namespace Carental.WebApi.Controllers
             }
         }
 
-        [Route("{fileName}")]
         [HttpGet]
+        [Authorize]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [Route("{fileName}")]
         public async Task<IActionResult> Download([FromRoute] string fileName)
         {
             DownloadFileCommand command = new(fileName);

@@ -57,7 +57,8 @@ namespace Carental.Infrastructure.Identity.Services
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _jwtSection["Issuer"],                
+                issuer: _jwtSection["Issuer"],  
+                audience: _jwtSection["Audience"],
                 //audience: _jwtSection["Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtSection["ExpirationInMinutes"])),
