@@ -20,7 +20,7 @@ namespace Carental.Application.Features.Account.Commands.SignInUser
             try {
                 (AuthSignInResult result, string? token) = await _authSignInManager.SignInAsync(request.Request, cancellationToken);
 
-                if (result is AuthSignInResult.SUCCEEDED)
+                if (result is AuthSignInResult.SUCCESS)
                     return Result.Ok(token ?? String.Empty);
 
                 Error error = new("Signin Failed!");

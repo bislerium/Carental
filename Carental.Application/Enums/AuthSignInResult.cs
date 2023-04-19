@@ -11,10 +11,10 @@ namespace Carental.Application.Enums
         NOTALLOWED,
 
         [EnumMemberMessage("User signin requires two Factor!")]
-        REQUIRESTWOFACTOR,
+        TWOFACTORREQUIRED,
 
         [EnumMemberMessage("User signin succeeded!")]
-        SUCCEEDED,
+        SUCCESS,
 
         [EnumMemberMessage("User signin failed")]
         FAILED

@@ -1,7 +1,6 @@
 ﻿using Carental.Application.Contracts.Identity;
 using Carental.Application.DTOs.Identity;
 using Carental.Application.Enums;
-using Carental.Application.Exceptions;
 using Carental.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -27,16 +26,16 @@ namespace Carental.Infrastructure.Identity.Services
 
         public async Task<(AuthSignInResult, string?)> SignInAsync(SignInRequest request, CancellationToken cancellationToken)
         {
-            AppUser? user = await _userManager.FindByEmailAsync(request.Email);
+            AppUser user = await _userManager.FindByEmailAsync(request.Email) ?? new AppUser();
 
-            if (user is null)
+            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, true);
+
+            if (result.Succeeded)
             {
-                throw new NotFoundException();
-            }
-
-            SignInResult result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RemeberMe, true);
-
-            return (Enum.Parse<AuthSignInResult>(result.ToString(), ignoreCase: true), GenerateToken(user));
+                return (AuthSignInResult.SUCCESS, await GenerateToken(user, request.RemeberMe));
+            }            
+            
+            return (Enum.Parse<AuthSignInResult>(result.ToString(), ignoreCase: true), null);
         }
 
         public async Task SignOutAsync(CancellationToken cancellationToken)
@@ -44,24 +43,35 @@ namespace Carental.Infrastructure.Identity.Services
             await _signInManager.SignOutAsync();
         }
 
-        public string GenerateToken(IdentityUser user)
+        private async Task<string> GenerateToken(AppUser user, bool extendedExpiration = true)
         {
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
+
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Name, user.UserName!),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-            };
+                new Claim(JwtRegisteredClaimNames.Email, user.Email!)
+            }
+            .Union(roleClaims)
+            .Union(userClaims);
+            
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSection["Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var expirationInMinutes = Convert.ToDouble(extendedExpiration 
+                ? _jwtSection["ExtendedExpiryInMinutes"] 
+                : _jwtSection["ExpirationInMinutes"]);
+
             var token = new JwtSecurityToken(
                 issuer: _jwtSection["Issuer"],  
-                audience: _jwtSection["Audience"],
-                //audience: _jwtSection["Audience"],
+                audience: _jwtSection["Audience"],           
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtSection["ExpirationInMinutes"])),
+                expires: DateTime.Now.AddMinutes(expirationInMinutes),
                 signingCredentials: creds
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
