@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <Folder Include="Features\Account\Queries\" />
-    <Folder Include="Features\Discount\" />
-    <Folder Include="Features\Rental\Queries\" />
+    <Folder Include="Features\Discount\Commands\" />
+    <Folder Include="Features\Discount\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -26,7 +26,7 @@ namespace Carental.WebApi.Controllers
         [Route("/[controller]s")]
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-            GetCarsCommand command = new();
+            GetCarsQuery command = new();
             Result<IEnumerable<CarSummaryResponse>> result = await mediator.Send(command);
             return result.IsSuccess
                 ? Ok(result.Value)
@@ -38,7 +38,7 @@ namespace Carental.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Detail([FromRoute] string id)
         {
-            GetCarDetailsByIdCommand command = new(id);
+            GetCarDetailsByIdQuery command = new(id);
             Result<CarDetailResponse> result = await mediator.Send(command);
             return result.IsSuccess
                 ? Ok(result.Value)

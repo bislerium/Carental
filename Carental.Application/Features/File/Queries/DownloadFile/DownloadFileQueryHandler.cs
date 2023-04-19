@@ -6,18 +6,18 @@ using MimeTypes;
 
 namespace Carental.Application.Features.File.Queries.DownloadFile
 {
-    public class DownloadFileCommandHandler : ICommandHandler<DownloadFileCommand, Tuple<byte[], string>>
+    public class DownloadFileQueryHandler : ICommandHandler<DownloadFileQuery, Tuple<byte[], string>>
     {
         private readonly IFileStore fileStore;
         private readonly IUnitOfWork unitOfWork;
 
-        public DownloadFileCommandHandler(IFileStore fileStore, IUnitOfWork unitOfWork)
+        public DownloadFileQueryHandler(IFileStore fileStore, IUnitOfWork unitOfWork)
         {
             this.fileStore = fileStore;
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<Tuple<byte[], string>>> Handle(DownloadFileCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Tuple<byte[], string>>> Handle(DownloadFileQuery request, CancellationToken cancellationToken)
         {
             string errorMessage;
             try

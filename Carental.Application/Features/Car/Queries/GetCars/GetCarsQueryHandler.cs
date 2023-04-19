@@ -5,16 +5,16 @@ using FluentResults;
 
 namespace Carental.Application.Features.Car.Queries.GetCars
 {
-    public class GetCarsHandler : IQueryHandler<GetCarsCommand, IEnumerable<CarSummaryResponse>>
+    public class GetCarsQueryHandler : IQueryHandler<GetCarsQuery, IEnumerable<CarSummaryResponse>>
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public GetCarsHandler(IUnitOfWork unitOfWork)
+        public GetCarsQueryHandler(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<IEnumerable<CarSummaryResponse>>> Handle(GetCarsCommand request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<CarSummaryResponse>>> Handle(GetCarsQuery request, CancellationToken cancellationToken)
         {
             var carSummaries = new List<CarSummaryResponse>();
             await foreach (var entity in unitOfWork.CarRepository.GetAllAsync(cancellationToken))

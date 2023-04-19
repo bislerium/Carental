@@ -6,17 +6,17 @@ using Mapster;
 
 namespace Carental.Application.Features.Car.Queries.GetCarDetailsById
 {
-    public class GetCarDetailsByIdCommandHandler : IQueryHandler<GetCarDetailsByIdCommand, CarDetailResponse>
+    public class GetCarDetailsByIdQueryHandler : IQueryHandler<GetCarDetailsByIdQuery, CarDetailResponse>
     {
 
         private readonly IUnitOfWork unitOfWork;
 
-        public GetCarDetailsByIdCommandHandler(IUnitOfWork unitOfWork)
+        public GetCarDetailsByIdQueryHandler(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<CarDetailResponse>> Handle(GetCarDetailsByIdCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CarDetailResponse>> Handle(GetCarDetailsByIdQuery request, CancellationToken cancellationToken)
         {
             Domain.Entities.Car? car = await unitOfWork.CarRepository.FindByIdAsync(request.CarId, cancellationToken);
 

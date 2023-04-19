@@ -45,7 +45,7 @@ namespace Carental.WebApi.Controllers
         [Route("{fileName}")]
         public async Task<IActionResult> Download([FromRoute] string fileName)
         {
-            DownloadFileCommand command = new(fileName);
+            DownloadFileQuery command = new(fileName);
             Result<Tuple<byte[], string>> result = await mediator.Send(command);
 
             return result.IsSuccess

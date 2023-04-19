@@ -2,5 +2,5 @@
 
 namespace Carental.Application.Features.File.Queries.DownloadFile
 {
-    public record DownloadFileCommand(String FileName): ICommand<Tuple<byte[], string>>;
+    public record DownloadFileQuery(String FileName): ICommand<Tuple<byte[], string>>;
 }

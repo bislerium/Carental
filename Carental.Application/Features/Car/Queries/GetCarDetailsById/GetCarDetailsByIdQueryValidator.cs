@@ -2,9 +2,9 @@
 
 namespace Carental.Application.Features.Car.Queries.GetCarDetailsById
 {
-    public class GetCarDetailsByIdCommandValidator : AbstractValidator<GetCarDetailsByIdCommand>
+    public class GetCarDetailsByIdQueryValidator : AbstractValidator<GetCarDetailsByIdQuery>
     {
-        public GetCarDetailsByIdCommandValidator()
+        public GetCarDetailsByIdQueryValidator()
         {
             RuleFor(x => x.CarId)
                 .Must(IsValidGuid)

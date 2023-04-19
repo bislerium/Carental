@@ -3,5 +3,5 @@ using Carental.Application.DTOs.Persistence.Car;
 
 namespace Carental.Application.Features.Car.Queries.GetCars
 {
-    public record GetCarsCommand(): IQuery<IEnumerable<CarSummaryResponse>>;
+    public record GetCarsQuery(): IQuery<IEnumerable<CarSummaryResponse>>;
 }
