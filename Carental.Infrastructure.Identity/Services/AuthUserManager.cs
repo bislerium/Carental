@@ -4,7 +4,9 @@ using Carental.Application.DTOs.Identity;
 using Carental.Application.Exceptions.CRUD;
 using Carental.Infrastructure.Identity.Entities;
 using Carental.Infrastructure.Identity.Extensions;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Carental.Infrastructure.Identity.Services
 {
@@ -49,5 +51,32 @@ namespace Carental.Infrastructure.Identity.Services
             return user.Id;
         }
 
+        public async Task<IEnumerable<User>> getAllUsersAsync(CancellationToken cancellationToken = default)
+        {
+            _userManager
+                .Users
+                .Select(x => new {
+                    Id = x.Id,
+                    UserName = x.UserName,
+                    NormalizedUserName = x.NormalizedUserName,
+                    Email = x.Email,
+                    NormalizedEmail = x.NormalizedEmail,
+                    EmailConfirmed = x.EmailConfirmed,
+                    PasswordHash = x.PasswordHash,
+                    PhoneNumber = x.PhoneNumber,
+                    PhoneNumberConfirmed = x.PhoneNumberConfirmed,
+                    TwoFactorEnabled = x.TwoFactorEnabled,
+                    LockoutEnd = x.LockoutEnd,
+                    LockoutEnabled = x.LockoutEnabled,
+                    AccessFailedCount = x.AccessFailedCount
+                });
+           var users = _userManager.Users.Adapt<IEnumerable<User>>();
+            return users;
+        }
+
+        public Task<IEnumerable<User>> getUserByIdAsync(string id, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Carental.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         [Route("{fileName}")]
         public async Task<IActionResult> Download([FromRoute] string fileName)

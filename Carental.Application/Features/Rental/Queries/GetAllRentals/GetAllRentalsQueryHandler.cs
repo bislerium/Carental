@@ -17,7 +17,7 @@ namespace Carental.Application.Features.Rental.Queries.GetAllRentals
 
         public Task<Result<IEnumerable<CarRentalsResponse>>> Handle(GetAllRentalsQuery request, CancellationToken cancellationToken)
         {
-            _unitOfWork.
+            throw new Exception();
         }
     }
 }
