@@ -64,7 +64,7 @@ namespace Carental.Infrastructure.Identity.Services
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var expirationInMinutes = Convert.ToDouble(extendedExpiration 
-                ? _jwtSection["ExtendedExpiryInMinutes"] 
+                ? _jwtSection["ExtendedExpiryInMinutes"]
                 : _jwtSection["ExpirationInMinutes"]);
 
             var token = new JwtSecurityToken(

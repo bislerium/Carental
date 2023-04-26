@@ -26,6 +26,7 @@ namespace Carental.Infrastructure.Identity.Configurations
                 Email = initialUserEmail,
                 NormalizedEmail = initialUserEmail.ToUpper(),
                 PasswordHash = passwordHasher.HashPassword(null!, _IntitialUserPassword),
+                EmailConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 ConcurrencyStamp = Guid.NewGuid().ToString(),                
             };

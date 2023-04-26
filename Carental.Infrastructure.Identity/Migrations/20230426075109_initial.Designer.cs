@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Carental.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityDBContext))]
-    [Migration("20230417152254_initial")]
+    [Migration("20230426075109_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -94,13 +94,15 @@ namespace Carental.Infrastructure.Identity.Migrations
                         {
                             Id = "0de77141-d6ea-4245-a54b-559493e97c37",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be85438e-3573-41ae-ad73-0a876a55d850",
-                            EmailConfirmed = false,
+                            ConcurrencyStamp = "2bb4305a-e84a-4b82-862a-1cb30b222081",
+                            Email = "admin@email.com",
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC6u0mptCL0RNfS0dF11Nd6iewF1kzFCiuhiCF+F5vEzMuiTEgpIShNX9fX7qEn7mg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKVy70+NNRFSvFDUAy/3A9df+i5IzUdzKgDt2HLKk3Qmah488bn64zDA2XWwnP6a4w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "15c770dd-74f7-4933-af2f-4337a8f22c3a",
+                            SecurityStamp = "6b42d2f6-e50c-4b07-863a-e50fe74b0721",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -136,21 +138,21 @@ namespace Carental.Infrastructure.Identity.Migrations
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889670",
-                            ConcurrencyStamp = "5da8dbed-6101-4060-aac8-c4490f713eab",
+                            ConcurrencyStamp = "18d32dd1-9d25-4e91-923c-84c103c71324",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889671",
-                            ConcurrencyStamp = "95763fb0-99ef-47a7-ba44-fb89bfec27d5",
+                            ConcurrencyStamp = "cadd01bc-3770-4422-a17b-0ed6aefe8969",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         },
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889672",
-                            ConcurrencyStamp = "6f2af1c5-b9fb-4a76-a949-d7131d8b6db8",
+                            ConcurrencyStamp = "4ca548ee-756f-441c-9663-b60f6240db46",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

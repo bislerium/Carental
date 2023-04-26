@@ -4,9 +4,9 @@ using Carental.Application.Features.Car.Commands.DeleteCar;
 using Carental.Application.Features.Car.Queries.GetCarDetailsById;
 using Carental.Application.Features.Car.Queries.GetCars;
 using Carental.Application.Features.Rental.Commands.RentACar;
-using Carental.Domain.Entities;
 using FluentResults;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carental.WebApi.Controllers
@@ -23,8 +23,9 @@ namespace Carental.WebApi.Controllers
             this.mediator = mediator;
         }
 
-        [Route("/[controller]s")]
+        [Route("/[controller]s")]        
         [HttpGet]
+        [Authorize(Roles = "Admin, Staff")]
         public async Task<IActionResult> GetAll() {
             GetCarsQuery command = new();
             Result<IEnumerable<CarSummaryResponse>> result = await mediator.Send(command);

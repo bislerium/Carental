@@ -6,7 +6,6 @@ using Carental.Infrastructure.Identity.Entities;
 using Carental.Infrastructure.Identity.Extensions;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Carental.Infrastructure.Identity.Services
 {

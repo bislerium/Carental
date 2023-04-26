@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "IdentityDB": "Data Source=DESKTOP-OAK0HGD\\SQLEXPRESS02;Database=Carental;Trusted_Connection=True;TrustServerCertificate=True",
-    "DomainDB": "Data Source=DESKTOP-OAK0HGD\\SQLEXPRESS02;Database=Carental;Trusted_Connection=True;TrustServerCertificate=True"
+    "IdentityDB": "Data Source=WALKAN\\SQLEXPRESS;Database=Carental;Trusted_Connection=True;TrustServerCertificate=True",
+    "DomainDB": "Data Source=WALKAN\\SQLEXPRESS;Database=Carental;Trusted_Connection=True;TrustServerCertificate=True"
   }
 }

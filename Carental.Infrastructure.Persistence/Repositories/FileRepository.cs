@@ -12,10 +12,10 @@ namespace Carental.Infrastructure.Persistence.Repositories
         public async Task<Domain.Entities.File> FindByFullNameAsync(string fullName, CancellationToken cancellationToken = default)
         {          
             string fileId = Path.GetFileNameWithoutExtension(fullName);
-            string fileExtension = Path.GetExtension(fullName).ToLower();
+            string fileExtension = Path.GetExtension(fullName);
 
             Domain.Entities.File? file = await FindByIdAsync(fileId, cancellationToken);
-            if (file == null || !file.Extension.Equals(fileExtension))
+            if (file is null || string.Compare(file.Extension, fileExtension, true) != 0)
             {
                 throw new FileNotFoundException();
             }
