@@ -21,7 +21,6 @@ namespace Carental.Application
                 configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
                 configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             });
-
             return services;
         }
     }

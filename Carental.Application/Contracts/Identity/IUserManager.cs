@@ -4,10 +4,10 @@ namespace Carental.Application.Contracts.Identity
 {
     public interface IUserManager
     {
-        public Task<string> CreateAccount(CreateAccountRequest createAccountRequest);
+        public Task<string> CreateAccount(CreateAccountRequestDTO createAccountRequest);
 
-        public Task<IEnumerable<User>> getAllUsersAsync(CancellationToken cancellationToken = default);
+        public Task<IEnumerable<User>> GetAllUsersAsync(CancellationToken cancellationToken = default);
 
-        public Task<IEnumerable<User>> getUserByIdAsync(string id, CancellationToken cancellationToken = default);
+        public Task<IEnumerable<User>> GetUserByIdAsync(string id, CancellationToken cancellationToken = default);
     }
 }

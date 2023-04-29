@@ -1,7 +1,10 @@
-﻿using Carental.Domain.Common;
+﻿using Carental.Application.Exceptions;
+using Carental.Domain.Common;
 using Carental.Domain.Repositories.Base;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace Carental.Infrastructure.Persistence.Repositories.Base
 {
@@ -39,6 +42,57 @@ namespace Carental.Infrastructure.Persistence.Repositories.Base
             dbContext.Set<TEntity>().Remove(entity);
         }
 
+        public void Update<TKey>(string id, Expression<Func<TEntity, TKey>> property, TKey value)
+        {
+            TEntity entity = CreateAndGetEntity(id);
+
+            UpdatePropertyValue(entity, property, value);
+        }
+
+        public async Task Update<TKey>(string id, Expression<Func<TEntity, TKey>> property, TKey value, CancellationToken cancellationToken = default)
+        {
+            TEntity entity = await FindByIdAsync(id, cancellationToken) ?? throw new NotFoundException();
+
+            UpdatePropertyValue(entity, property, value);
+        }
+
+        public void Update<TKey>(string id, IDictionary<Expression<Func<TEntity, TKey>>, TKey> propertyValuePairs)
+        {
+            TEntity entity = CreateAndGetEntity(id);
+
+            foreach (var pair in propertyValuePairs)
+            {
+                UpdatePropertyValue(entity, pair.Key, pair.Value);
+            }
+        }
+
+        public async Task Update<TKey>(string id, IDictionary<Expression<Func<TEntity, TKey>>, TKey> propertyValuePairs, CancellationToken cancellationToken = default)
+        {
+            TEntity entity = await FindByIdAsync(id, cancellationToken) ?? throw new NotFoundException();
+
+            foreach (var pair in propertyValuePairs)
+            {
+                UpdatePropertyValue(entity, pair.Key, pair.Value);
+            }
+        }
+       
+        private TEntity CreateAndGetEntity(string id) 
+        {
+            
+            TEntity entity = Activator.CreateInstance<TEntity>();
+            entity.Id = id;
+            dbContext.Attach(entity);
+            
+            return entity;
+        }
+
+        private void UpdatePropertyValue<TKey>(TEntity entity,Expression<Func<TEntity, TKey>> property, TKey value)
+        {
+            string propertyName = ((MemberExpression)property.Body).Member.Name;
+            PropertyEntry entry = dbContext.Entry(entity).Property(propertyName);
+            entry.CurrentValue = value;
+            entry.IsModified = true;
+        }
 
         public async Task<TEntity?> FindByIdAsync(string key, CancellationToken cancellationToken)
         {

@@ -3,5 +3,5 @@ using Carental.Application.DTOs.Persistence.Car;
 
 namespace Carental.Application.Features.Car.Commands.CreateCar
 {
-    public record CreateCarCommand (CreateCarRequest CreateCarRequest): ICommand<CarDetailResponse>;
+    public record CreateCarCommand (CreateCarRequestDTO CreateCarRequest): ICommand<CarDetailResponseDTO>;
 }

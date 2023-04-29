@@ -23,7 +23,7 @@ namespace Carental.Infrastructure.Persistence.Services
             _dbContext = dbContext;
         }
 
-        public async IAsyncEnumerable<CarRentalsResponse> Execute()
+        public async IAsyncEnumerable<CarRentalsResponseDTO> Execute()
         {
             var query = _dbContext.CarRentals
                 .Include(x => x.CarInventory)
@@ -46,7 +46,7 @@ namespace Carental.Infrastructure.Persistence.Services
                 });
             await foreach(var v in query.AsAsyncEnumerable())
             {
-                var r = v.Adapt<CarRentalsResponse>();
+                var r = v.Adapt<CarRentalsResponseDTO>();
                 yield return r;
             }                
         }

@@ -3,7 +3,6 @@ using Carental.Application.Features.Car.Commands.CreateCar;
 using Carental.Application.Features.Car.Commands.DeleteCar;
 using Carental.Application.Features.Car.Queries.GetCarDetailsById;
 using Carental.Application.Features.Car.Queries.GetCars;
-using Carental.Application.Features.Rental.Commands.RentACar;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,80 +10,66 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Carental.WebApi.Controllers
 {
+    [Authorize(Roles = "Admin, Staff")]
     [ApiController]
     [Route("[controller]")]
-    public class CarController : ControllerBase
+    public class CarsController : ControllerBase
     {
 
-        public IMediator mediator;
+        public readonly IMediator _mediator;
 
-        public CarController(IMediator mediator)
+        public CarsController(IMediator mediator)
         {
-            this.mediator = mediator;
+            this._mediator = mediator;
         }
-
-        [Route("/[controller]s")]        
+      
         [HttpGet]
-        [Authorize(Roles = "Admin, Staff")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll() {
             GetCarsQuery command = new();
-            Result<IEnumerable<CarSummaryResponse>> result = await mediator.Send(command);
+            Result<IEnumerable<CarSummaryResponseDTO>> result = await _mediator.Send(command);
             return result.IsSuccess
                 ? Ok(result.Value)
                 : BadRequest();
         }
 
-
-        [Route("{id:guid}")]
-        [HttpGet]
+        [HttpGet("{id:guid}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Detail([FromRoute] string id)
         {
             GetCarDetailsByIdQuery command = new(id);
-            Result<CarDetailResponse> result = await mediator.Send(command);
+            Result<CarDetailResponseDTO> result = await _mediator.Send(command);
             return result.IsSuccess
                 ? Ok(result.Value)
                 : BadRequest(result.Reasons);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreateCarRequest createCarRequest)
+        public async Task<ActionResult> Create(CreateCarRequestDTO createCarRequest)
         {
             CreateCarCommand command = new(createCarRequest);
-            Result<CarDetailResponse> result = await mediator.Send(command);
+            Result<CarDetailResponseDTO> result = await _mediator.Send(command);
             return result.IsSuccess
                 ? CreatedAtAction(nameof(Detail),new { id = result.Value.Id }, result.Value)
                 : BadRequest();
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(CreateCarRequest createCarRequest)
+        public async Task<ActionResult> Update(CreateCarRequestDTO createCarRequest)
         {
             CreateCarCommand command = new(createCarRequest);
-            Result<CarDetailResponse> result = await mediator.Send(command);
+            Result<CarDetailResponseDTO> result = await _mediator.Send(command);
             return result.IsSuccess
                 ? CreatedAtAction(nameof(Detail), new { id = result.Value.Id }, result.Value)
                 : BadRequest();
         }
 
-        [Route("{carId}/[action]")]
-        [HttpPost]
-        public async Task<IActionResult> Rent(string carId)
-        {
-            RentACarCommand command = new(new Application.DTOs.Persistence.Rental.RentACarRequest(carId, HttpContext.User.Identity.Name!));
-            Result result = await mediator.Send(command);
 
-            return result.IsSuccess 
-                ? Ok()
-                : BadRequest();
-        }
-
-
-        [Route("{id:guid}")]
-        [HttpDelete]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete([FromRoute] string id)
         {
             DeleteCarCommand command = new(id);
-            Result result = await mediator.Send(command);
+            Result result = await _mediator.Send(command);
             return result.IsSuccess
                 ? Ok()
                 : BadRequest();

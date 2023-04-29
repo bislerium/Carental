@@ -5,7 +5,7 @@ using FluentResults;
 
 namespace Carental.Application.Features.Rental.Queries.GetAllRentals
 {
-    internal class GetAllRentalsQueryHandler : ICommandHandler<GetAllRentalsQuery, IEnumerable<CarRentalsResponse>>
+    internal class GetAllRentalsQueryHandler : ICommandHandler<GetAllRentalsQuery, IEnumerable<CarRentalsResponseDTO>>
     {
 
         private readonly IUnitOfWork _unitOfWork;
@@ -15,7 +15,7 @@ namespace Carental.Application.Features.Rental.Queries.GetAllRentals
             _unitOfWork = unitOfWork;
         }
 
-        public Task<Result<IEnumerable<CarRentalsResponse>>> Handle(GetAllRentalsQuery request, CancellationToken cancellationToken)
+        public Task<Result<IEnumerable<CarRentalsResponseDTO>>> Handle(GetAllRentalsQuery request, CancellationToken cancellationToken)
         {
             throw new Exception();
         }

@@ -2,7 +2,7 @@
 
 namespace Carental.Application.DTOs.Persistence.Car
 {
-    public class CarSummaryResponse
+    public class CarSummaryResponseDTO
     {
         public string Id { get; set; } = null!;
         public string Make { get; set; } = null!;

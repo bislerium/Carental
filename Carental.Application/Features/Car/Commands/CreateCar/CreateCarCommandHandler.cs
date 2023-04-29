@@ -7,7 +7,7 @@ using Mapster;
 
 namespace Carental.Application.Features.Car.Commands.CreateCar
 {
-    public class CreateCarCommandHandler : ICommandHandler<CreateCarCommand, CarDetailResponse>
+    public class CreateCarCommandHandler : ICommandHandler<CreateCarCommand, CarDetailResponseDTO>
     {
 
         private readonly IUnitOfWork unitOfWork;
@@ -17,7 +17,7 @@ namespace Carental.Application.Features.Car.Commands.CreateCar
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<CarDetailResponse>> Handle(CreateCarCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CarDetailResponseDTO>> Handle(CreateCarCommand request, CancellationToken cancellationToken)
         {
             try 
             {
@@ -32,7 +32,7 @@ namespace Carental.Application.Features.Car.Commands.CreateCar
                 unitOfWork.CarRepository.Add(car);                
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
-                CarDetailResponse carDetailResponse = car.Adapt<CarDetailResponse>();
+                CarDetailResponseDTO carDetailResponse = car.Adapt<CarDetailResponseDTO>();
                 carDetailResponse.RentalRate = carInventory.RentalRate;
 
                 return Result.Ok(carDetailResponse);

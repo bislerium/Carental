@@ -6,7 +6,7 @@ using MimeTypes;
 
 namespace Carental.Application.Features.File.Queries.DownloadFile
 {
-    public class DownloadFileQueryHandler : ICommandHandler<DownloadFileQuery, Tuple<byte[], string>>
+    public class DownloadFileQueryHandler : ICommandHandler<DownloadFileQuery, (byte[] Content, string ContentType)>
     {
         private readonly IFileStore fileStore;
         private readonly IUnitOfWork unitOfWork;
@@ -17,7 +17,7 @@ namespace Carental.Application.Features.File.Queries.DownloadFile
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<Tuple<byte[], string>>> Handle(DownloadFileQuery request, CancellationToken cancellationToken)
+        public async Task<Result<(byte[] Content, string ContentType)>> Handle(DownloadFileQuery request, CancellationToken cancellationToken)
         {
             string errorMessage;
             try
@@ -27,7 +27,7 @@ namespace Carental.Application.Features.File.Queries.DownloadFile
                 byte[] fileBytes = await fileStore.Read(file.FilePath, cancellationToken);
                 string mimeType = MimeTypeMap.GetMimeType(file.Extension);
 
-                return Tuple.Create(fileBytes, mimeType);
+                return (fileBytes, mimeType);
             }
             catch (FileNotFoundException)
             {

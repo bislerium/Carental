@@ -5,7 +5,7 @@ using FluentResults;
 
 namespace Carental.Application.Features.Car.Queries.GetCars
 {
-    public class GetCarsQueryHandler : IQueryHandler<GetCarsQuery, IEnumerable<CarSummaryResponse>>
+    public class GetCarsQueryHandler : IQueryHandler<GetCarsQuery, IEnumerable<CarSummaryResponseDTO>>
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -14,12 +14,12 @@ namespace Carental.Application.Features.Car.Queries.GetCars
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<IEnumerable<CarSummaryResponse>>> Handle(GetCarsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<CarSummaryResponseDTO>>> Handle(GetCarsQuery request, CancellationToken cancellationToken)
         {
-            var carSummaries = new List<CarSummaryResponse>();
+            var carSummaries = new List<CarSummaryResponseDTO>();
             await foreach (var entity in unitOfWork.CarRepository.GetAllAsync(cancellationToken))
             {
-                CarSummaryResponse carSummary = new()
+                CarSummaryResponseDTO carSummary = new()
                 {
                     Id = entity.Id,
                     Make = entity.Make,
@@ -30,7 +30,7 @@ namespace Carental.Application.Features.Car.Queries.GetCars
                 };
                 carSummaries.Add(carSummary);
             }
-            return Result.Ok<IEnumerable<CarSummaryResponse>>(carSummaries);
+            return Result.Ok<IEnumerable<CarSummaryResponseDTO>>(carSummaries);
         }
     }
 }

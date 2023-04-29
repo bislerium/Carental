@@ -20,7 +20,7 @@ namespace Carental.Infrastructure.Identity.Services
             _roleManager = roleManager;
         }
 
-        public async Task<string> CreateAccount(CreateAccountRequest createAccountRequest)
+        public async Task<string> CreateAccount(CreateAccountRequestDTO createAccountRequest)
         {
             AppUser user = new()
             {
@@ -50,7 +50,7 @@ namespace Carental.Infrastructure.Identity.Services
             return user.Id;
         }
 
-        public async Task<IEnumerable<User>> getAllUsersAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<User>> GetAllUsersAsync(CancellationToken cancellationToken = default)
         {
             _userManager
                 .Users
@@ -73,7 +73,7 @@ namespace Carental.Infrastructure.Identity.Services
             return users;
         }
 
-        public Task<IEnumerable<User>> getUserByIdAsync(string id, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<User>> GetUserByIdAsync(string id, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

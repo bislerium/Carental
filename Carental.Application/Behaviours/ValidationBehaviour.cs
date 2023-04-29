@@ -17,11 +17,8 @@ namespace Carental.Application.Behaviours
             {
                 var context = new ValidationContext<TRequest>(request);
 
-                var validationFailures = _validators
-                    .Select(v => v.Validate(context))
-                    .SelectMany(r => r.Errors)
-                    .Where(f => f != null)
-                    .ToList();
+                var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
+                var validationFailures = validationResults.SelectMany(r => r.Errors).Where(f => f is not null).ToList();
 
                 if (validationFailures.Count != 0)
                 {

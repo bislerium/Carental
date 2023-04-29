@@ -1,7 +1,7 @@
 ﻿using Carental.Application.Abstractions.CQRS.Command;
 using Carental.Application.Contracts.Identity;
 using Carental.Application.DTOs.Identity;
-using Carental.Application.DTOs.Persistence;
+using Carental.Application.DTOs.Persistence.Account;
 using Carental.Application.Exceptions.CRUD;
 using Carental.Domain.Entities;
 using Carental.Domain.UnitOfWork;
@@ -23,8 +23,8 @@ namespace Carental.Application.Features.Account.Commands.CreateAccount
 
         public async Task<Result> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
-            CreateAccountRequest createAccountRequest = request.CreateCustomerAccountRequest.Adapt<CreateAccountRequest>();
-            CreateCustomerRequest createCustomerRequest = request.CreateCustomerAccountRequest.Adapt<CreateCustomerRequest>();
+            CreateAccountRequestDTO createAccountRequest = request.CreateCustomerAccountRequest.Adapt<CreateAccountRequestDTO>();
+            CreateCustomerRequestDTO createCustomerRequest = request.CreateCustomerAccountRequest.Adapt<CreateCustomerRequestDTO>();
 
             try
             {

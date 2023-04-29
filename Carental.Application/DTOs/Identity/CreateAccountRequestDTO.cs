@@ -2,7 +2,7 @@
 
 namespace Carental.Application.DTOs.Identity
 {
-    public class CreateAccountRequest
+    public class CreateAccountRequestDTO
     {        
         public string UserName { get; set; } = null!;
 

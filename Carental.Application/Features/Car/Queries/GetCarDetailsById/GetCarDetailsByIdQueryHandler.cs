@@ -6,7 +6,7 @@ using Mapster;
 
 namespace Carental.Application.Features.Car.Queries.GetCarDetailsById
 {
-    public class GetCarDetailsByIdQueryHandler : IQueryHandler<GetCarDetailsByIdQuery, CarDetailResponse>
+    public class GetCarDetailsByIdQueryHandler : IQueryHandler<GetCarDetailsByIdQuery, CarDetailResponseDTO>
     {
 
         private readonly IUnitOfWork unitOfWork;
@@ -16,7 +16,7 @@ namespace Carental.Application.Features.Car.Queries.GetCarDetailsById
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<CarDetailResponse>> Handle(GetCarDetailsByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<CarDetailResponseDTO>> Handle(GetCarDetailsByIdQuery request, CancellationToken cancellationToken)
         {
             Domain.Entities.Car? car = await unitOfWork.CarRepository.FindByIdAsync(request.CarId, cancellationToken);
 
@@ -25,7 +25,7 @@ namespace Carental.Application.Features.Car.Queries.GetCarDetailsById
                 return Result.Fail(new Error("No car found with given Id."));
             }
 
-            CarDetailResponse carDetail = car.Adapt<CarDetailResponse>();
+            CarDetailResponseDTO carDetail = car.Adapt<CarDetailResponseDTO>();
 
             carDetail.RentalRate = car.CarInventory.RentalRate;
             carDetail.IsRented = car.CarInventory.IsRented;
