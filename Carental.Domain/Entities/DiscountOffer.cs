@@ -4,6 +4,8 @@ namespace Carental.Domain.Entities
 {
     public class DiscountOffer: BaseAuditableEntity
     {
+        public string Code { get; set; } = null!;
+
         public string Title { get; set; } = null!;
 
         public string Description { get; set; } = null!;

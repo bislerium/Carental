@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Carental.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230416085938_initial")]
+    [Migration("20230430075542_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -50,6 +50,9 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.Property<int>("FuelType")
                         .HasColumnType("int");
 
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
@@ -73,6 +76,10 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId")
+                        .IsUnique()
+                        .HasFilter("[ImageId] IS NOT NULL");
 
                     b.ToTable("Cars");
                 });
@@ -178,6 +185,9 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("DiscountOfferId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsCancelled")
                         .HasColumnType("bit");
 
@@ -190,7 +200,14 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("RentPrice")
+                        .HasPrecision(9, 2)
+                        .HasColumnType("decimal(9,2)");
+
                     b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReturnOrCancelDateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -198,6 +215,8 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.HasIndex("CarInventoryId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("DiscountOfferId");
 
                     b.ToTable("CarRentals");
                 });
@@ -217,6 +236,12 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DocumentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("DocumentType")
+                        .HasColumnType("int");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -224,8 +249,8 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageURL")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
@@ -235,6 +260,14 @@ namespace Carental.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DocumentId")
+                        .IsUnique()
+                        .HasFilter("[DocumentId] IS NOT NULL");
+
+                    b.HasIndex("ImageId")
+                        .IsUnique()
+                        .HasFilter("[ImageId] IS NOT NULL");
+
                     b.ToTable("Customers");
                 });
 
@@ -243,6 +276,13 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(8)")
+                        .HasAnnotation("RegularExpressionAttribute", "^CR[A-Z0-9]{6}$");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -307,6 +347,15 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.ToTable("Files");
                 });
 
+            modelBuilder.Entity("Carental.Domain.Entities.Car", b =>
+                {
+                    b.HasOne("Carental.Domain.Entities.File", "Image")
+                        .WithOne()
+                        .HasForeignKey("Carental.Domain.Entities.Car", "ImageId");
+
+                    b.Navigation("Image");
+                });
+
             modelBuilder.Entity("Carental.Domain.Entities.CarDamage", b =>
                 {
                     b.HasOne("Carental.Domain.Entities.CarRental", "Rental")
@@ -343,9 +392,30 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Carental.Domain.Entities.DiscountOffer", "DiscountOffer")
+                        .WithMany()
+                        .HasForeignKey("DiscountOfferId");
+
                     b.Navigation("CarInventory");
 
                     b.Navigation("Customer");
+
+                    b.Navigation("DiscountOffer");
+                });
+
+            modelBuilder.Entity("Carental.Domain.Entities.Customer", b =>
+                {
+                    b.HasOne("Carental.Domain.Entities.File", "Document")
+                        .WithOne()
+                        .HasForeignKey("Carental.Domain.Entities.Customer", "DocumentId");
+
+                    b.HasOne("Carental.Domain.Entities.File", "Image")
+                        .WithOne()
+                        .HasForeignKey("Carental.Domain.Entities.Customer", "ImageId");
+
+                    b.Navigation("Document");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Carental.Domain.Entities.Car", b =>

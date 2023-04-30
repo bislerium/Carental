@@ -13,16 +13,20 @@ namespace Carental.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<CarRental> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(r => r.Id);
 
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(r => r.Id).ValueGeneratedOnAdd();
+
+            builder.Property(r => r.RentPrice)
+                .IsRequired()
+                .HasPrecision(9, 2);
 
             builder
                 .HasOne(r => r.CarInventory)               
                 .WithMany(i => i.Rentals)
-                .HasForeignKey(x => x.CarInventoryId);
+                .HasForeignKey(r => r.CarInventoryId);
 
-            builder.Property(x => x.RequestDate)
+            builder.Property(r => r.RequestDate)
                 .IsRequired()
                 .HasConversion<DateOnlyToDateTimeConverter>();
         }

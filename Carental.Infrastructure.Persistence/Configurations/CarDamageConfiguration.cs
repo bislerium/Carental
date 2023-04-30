@@ -7,9 +7,9 @@ namespace Carental.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<CarDamage> builder)
         {
-           builder.HasKey(x => x.Id);
+           builder.HasKey(d => d.Id);
 
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(d=> d.Id).ValueGeneratedOnAdd();
 
             builder
                 .HasOne(d => d.Rental)

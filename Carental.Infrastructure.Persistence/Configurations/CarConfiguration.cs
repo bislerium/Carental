@@ -12,6 +12,11 @@ namespace Carental.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
+            builder
+                .HasOne(c => c.Image)
+                .WithOne()
+                .HasForeignKey<Car>(c => c.ImageId);
+
             builder.Property(x => x.Make)
                 .IsRequired()
                 .HasMaxLength(30);

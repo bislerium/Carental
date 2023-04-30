@@ -5,6 +5,8 @@ namespace Carental.Domain.Entities
 {
     public class Car: BaseAuditableEntity
     {
+        public string? ImageId { get; set; }
+        public virtual File? Image { get; set; }
         public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
         public DateOnly Year { get; set; }

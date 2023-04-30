@@ -12,51 +12,11 @@ namespace Carental.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cars",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Make = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Year = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Seats = table.Column<int>(type: "int", nullable: false),
-                    CarType = table.Column<int>(type: "int", nullable: false),
-                    FuelType = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cars", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DiscountOffers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Code = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiscountRate = table.Column<int>(type: "int", nullable: false),
@@ -87,6 +47,65 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Files", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ImageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Make = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Year = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Seats = table.Column<int>(type: "int", nullable: false),
+                    CarType = table.Column<int>(type: "int", nullable: false),
+                    FuelType = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cars_Files_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Files",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ImageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DocumentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DocumentType = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Customers_Files_DocumentId",
+                        column: x => x.DocumentId,
+                        principalTable: "Files",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Customers_Files_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Files",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -123,6 +142,9 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     ApprovalStatus = table.Column<int>(type: "int", nullable: false),
                     IsCancelled = table.Column<bool>(type: "bit", nullable: false),
                     IsReturned = table.Column<bool>(type: "bit", nullable: false),
+                    ReturnOrCancelDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DiscountOfferId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    RentPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -143,6 +165,11 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CarRentals_DiscountOffers_DiscountOfferId",
+                        column: x => x.DiscountOfferId,
+                        principalTable: "DiscountOffers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -183,6 +210,32 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 name: "IX_CarRentals_CustomerId",
                 table: "CarRentals",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarRentals_DiscountOfferId",
+                table: "CarRentals",
+                column: "DiscountOfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cars_ImageId",
+                table: "Cars",
+                column: "ImageId",
+                unique: true,
+                filter: "[ImageId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_DocumentId",
+                table: "Customers",
+                column: "DocumentId",
+                unique: true,
+                filter: "[DocumentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_ImageId",
+                table: "Customers",
+                column: "ImageId",
+                unique: true,
+                filter: "[ImageId] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -190,12 +243,6 @@ namespace Carental.Infrastructure.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CarDamages");
-
-            migrationBuilder.DropTable(
-                name: "DiscountOffers");
-
-            migrationBuilder.DropTable(
-                name: "Files");
 
             migrationBuilder.DropTable(
                 name: "CarRentals");
@@ -207,7 +254,13 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 name: "Customers");
 
             migrationBuilder.DropTable(
+                name: "DiscountOffers");
+
+            migrationBuilder.DropTable(
                 name: "Cars");
+
+            migrationBuilder.DropTable(
+                name: "Files");
         }
     }
 }

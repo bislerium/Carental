@@ -1,5 +1,6 @@
 ﻿using Carental.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Carental.Infrastructure.Persistence.Configurations
 {
@@ -13,6 +14,16 @@ namespace Carental.Infrastructure.Persistence.Configurations
                 .HasMany(c => c.CarRentals)
                 .WithOne(r => r.Customer)                
                 .HasForeignKey(r => r.CustomerId);
+
+            builder
+                .HasOne(c => c.Image)
+                .WithOne()
+                .HasForeignKey<Customer>(c => c.ImageId);
+
+            builder
+                .HasOne(c => c.Document)
+                .WithOne()
+                .HasForeignKey<Customer>( c => c.DocumentId);                
         }
     }
 }

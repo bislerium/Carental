@@ -10,10 +10,15 @@ namespace Carental.Domain.Entities
 {
     public class Customer : BaseAuditableEntity
     {
-        public string? ImageURL { get; set; } = null!;
+        public string? ImageId { get; set; }
+        public virtual File? Image { get; set; } = null!;
         public string FullName { get; set; } = null!;
         public Gender Gender { get; set; }
         public string Address { get; set; } = null!;
+        public string? DocumentId { get; set; }
+        public virtual File? Document { get; set; }
+        public DocumentType? DocumentType { get; set; }
+
         public virtual ICollection<CarRental> CarRentals { get; set; } = null!;
     }
 }

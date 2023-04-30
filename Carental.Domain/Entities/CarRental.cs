@@ -21,6 +21,14 @@ namespace Carental.Domain.Entities
 
         public bool IsReturned { get; set; }
 
+        public DateTime ReturnOrCancelDateTime { get; set; }
+
+        public string? DiscountOfferId { get; set; }
+
+        public virtual DiscountOffer? DiscountOffer { get; set; }
+
+        public decimal RentPrice { get; set; }
+
         public virtual CarDamage? CarDamage { get; set; }
     }
 }
