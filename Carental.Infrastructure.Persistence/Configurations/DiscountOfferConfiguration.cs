@@ -10,10 +10,19 @@ namespace Carental.Infrastructure.Persistence.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(v => v.Code)
-                .IsRequired()
+            builder
+                .HasIndex(v => v.Code)
+                .IsUnique()
+                .IncludeProperties(v => new
+                {
+                    v.EndDate,
+                    v.DiscountRate
+                });
+
+            builder.Property(v => v.Code)                
+                .IsRequired()                
                 .HasMaxLength(8)
-                .IsUnicode(false)
+                .IsUnicode(false)                
                 .HasAnnotation(nameof(RegularExpressionAttribute), "^CR[A-Z0-9]{6}$");
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();

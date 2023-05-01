@@ -26,7 +26,8 @@ namespace Carental.Infrastructure.Persistence.Configurations
                 .HasMaxLength(30);
 
             builder.Property(x => x.Year)
-                .IsRequired().HasConversion<DateOnlyToDateTimeConverter>();
+                .IsRequired()
+                .HasConversion<DateOnlyToDateTimeConverter>();
 
             builder.Property(x => x.Color);
 

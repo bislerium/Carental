@@ -10,16 +10,16 @@ namespace Carental.Infrastructure.Persistence.Repositories.Base
 {
     public class Repostiory<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, new()
     {
-        private readonly AppDBContext dbContext;
+        private readonly AppDBContext _dbContext;
 
         public Repostiory(AppDBContext dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = dbContext;
         }
 
         public IQueryable<TEntity> Query(bool noTracking = true)
         {
-            DbSet<TEntity> entitySet = dbContext.Set<TEntity>();
+            DbSet<TEntity> entitySet = _dbContext.Set<TEntity>();
             return noTracking
                 ? entitySet.AsNoTracking()
                 : entitySet.AsTracking();
@@ -27,19 +27,19 @@ namespace Carental.Infrastructure.Persistence.Repositories.Base
 
         public void Add(TEntity entity)
         {
-            dbContext.Set<TEntity>().Attach(entity);
-            dbContext.Entry(entity).State = EntityState.Added;
+            _dbContext.Set<TEntity>().Attach(entity);
+            _dbContext.Entry(entity).State = EntityState.Added;
         }
 
         public void Update(TEntity entity)
         {
-            dbContext.Set<TEntity>().Attach(entity);
-            dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.Set<TEntity>().Attach(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(TEntity entity)
         {
-            dbContext.Set<TEntity>().Remove(entity);
+            _dbContext.Set<TEntity>().Remove(entity);
         }
 
         public void Update<TKey>(string id, Expression<Func<TEntity, TKey>> property, TKey value)
@@ -81,7 +81,7 @@ namespace Carental.Infrastructure.Persistence.Repositories.Base
             
             TEntity entity = Activator.CreateInstance<TEntity>();
             entity.Id = id;
-            dbContext.Attach(entity);
+            _dbContext.Attach(entity);
             
             return entity;
         }
@@ -89,26 +89,32 @@ namespace Carental.Infrastructure.Persistence.Repositories.Base
         private void UpdatePropertyValue<TKey>(TEntity entity,Expression<Func<TEntity, TKey>> property, TKey value)
         {
             string propertyName = ((MemberExpression)property.Body).Member.Name;
-            PropertyEntry entry = dbContext.Entry(entity).Property(propertyName);
+            PropertyEntry entry = _dbContext.Entry(entity).Property(propertyName);
             entry.CurrentValue = value;
             entry.IsModified = true;
         }
 
-        public async Task<TEntity?> FindByIdAsync(string key, CancellationToken cancellationToken)
+        public async Task<TEntity?> FindByIdAsync(string key, CancellationToken cancellationToken = default)
         {
-            return await dbContext
+            return await _dbContext
                 .Set<TEntity>()
                 .FindAsync(new object?[] { key }, cancellationToken: cancellationToken);
         }
 
-        public async IAsyncEnumerable<TEntity> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+        public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, bool noTracking = true, CancellationToken cancellationToken = default)
+        {
+            return await Query(noTracking)
+                .FirstOrDefaultAsync(predicate, cancellationToken);
+        }
+
+        public async IAsyncEnumerable<TEntity> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             var batchSize = 100; //Fetch number of rows per database round trip. smaller batch size = number of records/rows improves memory usuage.
             var skip = 0; // offset
 
             while (true)
             {
-                var entities = await dbContext.Set<TEntity>()
+                var entities = await _dbContext.Set<TEntity>()
                     .OrderBy(e => e.Id)
                     .Skip(skip)
                     .Take(batchSize)
@@ -129,9 +135,9 @@ namespace Carental.Infrastructure.Persistence.Repositories.Base
             }
         }
 
-        public async IAsyncEnumerable<TEntity> SortAsync(Expression<Func<TEntity, bool>>? predicate, IReadOnlyDictionary<Expression<Func<TEntity, object>>, bool>? orderBy, [EnumeratorCancellation] CancellationToken cancellationToken)
+        public async IAsyncEnumerable<TEntity> SortAsync(Expression<Func<TEntity, bool>>? predicate, IReadOnlyDictionary<Expression<Func<TEntity, object>>, bool>? orderBy, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            IQueryable<TEntity> collections = dbContext.Set<TEntity>().AsNoTracking();
+            IQueryable<TEntity> collections = _dbContext.Set<TEntity>().AsNoTracking();
 
             if (predicate is not null) 
             {

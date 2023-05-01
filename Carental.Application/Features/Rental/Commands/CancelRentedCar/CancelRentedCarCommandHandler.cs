@@ -43,6 +43,8 @@ namespace Carental.Application.Features.Rental.Commands.CancelRentedCar
                     .Update(rental.CarInventoryId, c => c.IsRented, false);
 
                 rental.IsCancelled = true;
+                rental.ReturnOrCancelDateTime = DateTime.UtcNow;
+
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Result.Ok();

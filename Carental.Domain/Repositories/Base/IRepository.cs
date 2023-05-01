@@ -8,6 +8,7 @@ namespace Carental.Domain.Repositories.Base
     {
         public IQueryable<TEntity> Query(bool noTracking = true);
         public Task<TEntity?> FindByIdAsync(string key, CancellationToken cancellationToken = default);
+        public Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> condition, bool noTracking = true, CancellationToken cancellationToken = default);
         public IAsyncEnumerable<TEntity> SortAsync(Expression<Func<TEntity, bool>>? predicate, IReadOnlyDictionary<Expression<Func<TEntity, object>>, bool>? orderBy, CancellationToken cancellationToken = default);
         public IAsyncEnumerable<TEntity> GetAllAsync(CancellationToken cancellationToken = default);
         public void Add(TEntity entity);

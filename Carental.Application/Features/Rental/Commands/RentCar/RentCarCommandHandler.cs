@@ -19,12 +19,11 @@ namespace Carental.Application.Features.Rental.Commands.RentCar
         {
             RentCarRequestDTO dto = request.RentCarRequest;
 
-            List<DiscountOffer> offers = await _unitOfWork
+            DiscountOffer? offers = await _unitOfWork
                 .DiscountOfferRepository
-                .SortAsync(d => d.Code == request.RentCarRequest.VoucherCode && DateTime.UtcNow < d.EndDate, null, cancellationToken)
-                .ToListAsync();
+                .FindAsync(d => d.Code == request.RentCarRequest.VoucherCode && DateTime.UtcNow < d.EndDate, cancellationToken: cancellationToken);
 
-            if (!offers.Any())
+            if (offers is null)
             {
                 return Result.Fail("Wrong discount voucer code.");
             }
@@ -51,7 +50,7 @@ namespace Carental.Application.Features.Rental.Commands.RentCar
                     CustomerId = request.UserId,
                     CarInventoryId = carInventory.Id,
                     RequestDate = dto.RequestDate,
-                    DiscountOfferId = offers.First().Id,
+                    DiscountOfferId = offers.Id,
                 };
 
                 _unitOfWork.CarRentalRepository.Add(carRental);
