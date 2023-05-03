@@ -19,6 +19,11 @@ namespace Carental.Application.Features.Rental.Commands.RentCar
         {
             RentCarRequestDTO dto = request.RentCarRequest;
 
+            if (dto.RequestDate < DateOnly.FromDateTime(DateTime.UtcNow))
+            {
+                return Result.Fail("Must book one day prior.");
+            }
+
             DiscountOffer? offers = await _unitOfWork
                 .DiscountOfferRepository
                 .FindAsync(d => d.Code == request.RentCarRequest.VoucherCode && DateTime.UtcNow < d.EndDate, cancellationToken: cancellationToken);

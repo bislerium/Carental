@@ -34,8 +34,7 @@ builder.Services.AddAuthentication(options =>
     o.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = section["Issuer"],
-        ValidAudience = section["Audience"],
-        //ValidAudiences = section.GetValue<string[]>("Audiences"),       
+        ValidAudience = section["Audience"],     
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(section["Key"]!)),
         ClockSkew = TimeSpan.FromMinutes(section.GetValue<double>("SkewInMinutes")),
         ValidateIssuer = true,

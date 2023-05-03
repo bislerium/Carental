@@ -4,6 +4,6 @@ namespace Carental.Application.Contracts.Persistence.ComplexQuery
 {
     public interface IGetRentals
     {
-        IAsyncEnumerable<CarRentalsResponseDTO> Execute();
+        IAsyncEnumerable<CarRentalsResponseDTO> Execute(CancellationToken cancellationToken);
     }
 }

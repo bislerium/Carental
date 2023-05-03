@@ -12,13 +12,36 @@ namespace Carental.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "CarDamages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DamageDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReportedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReviewStatus = table.Column<int>(type: "int", nullable: false),
+                    ReviewedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Charge = table.Column<int>(type: "int", nullable: false),
+                    IsChargePaid = table.Column<bool>(type: "bit", nullable: false),
+                    PaidOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentType = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarDamages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DiscountOffers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Code = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     DiscountRate = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -145,6 +168,7 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     ReturnOrCancelDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DiscountOfferId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RentPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: false),
+                    CarDamageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -153,6 +177,11 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CarRentals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarRentals_CarDamages_CarDamageId",
+                        column: x => x.CarDamageId,
+                        principalTable: "CarDamages",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CarRentals_CarInventories_CarInventoryId",
                         column: x => x.CarInventoryId,
@@ -172,34 +201,12 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "CarDamages",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DamageDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReportedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReviewStatus = table.Column<int>(type: "int", nullable: false),
-                    ReviewedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Charge = table.Column<int>(type: "int", nullable: false),
-                    IsChargePaid = table.Column<bool>(type: "bit", nullable: false),
-                    PaidOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentType = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CarDamages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CarDamages_CarRentals_Id",
-                        column: x => x.Id,
-                        principalTable: "CarRentals",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_CarRentals_CarDamageId",
+                table: "CarRentals",
+                column: "CarDamageId",
+                unique: true,
+                filter: "[CarDamageId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CarRentals_CarInventoryId",
@@ -236,16 +243,23 @@ namespace Carental.Infrastructure.Persistence.Migrations
                 column: "ImageId",
                 unique: true,
                 filter: "[ImageId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiscountOffers_Code",
+                table: "DiscountOffers",
+                column: "Code",
+                unique: true)
+                .Annotation("SqlServer:Include", new[] { "EndDate", "DiscountRate" });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CarDamages");
+                name: "CarRentals");
 
             migrationBuilder.DropTable(
-                name: "CarRentals");
+                name: "CarDamages");
 
             migrationBuilder.DropTable(
                 name: "CarInventories");

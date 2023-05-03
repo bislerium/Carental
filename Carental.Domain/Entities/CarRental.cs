@@ -17,6 +17,8 @@ namespace Carental.Domain.Entities
 
         public ApprovalStatus ApprovalStatus { get; set; } = ApprovalStatus.PENDING;
 
+        public DateTime ApprovedOn { get; set; }
+
         public bool IsCancelled { get; set; }
 
         public bool IsReturned { get; set; }
@@ -28,6 +30,8 @@ namespace Carental.Domain.Entities
         public virtual DiscountOffer? DiscountOffer { get; set; }
 
         public decimal RentPrice { get; set; }
+
+        public string? CarDamageId { get; set; }
 
         public virtual CarDamage? CarDamage { get; set; }
     }

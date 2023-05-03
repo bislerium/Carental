@@ -91,15 +91,15 @@ namespace Carental.Infrastructure.Identity.Migrations
                         {
                             Id = "0de77141-d6ea-4245-a54b-559493e97c37",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2bb4305a-e84a-4b82-862a-1cb30b222081",
+                            ConcurrencyStamp = "c9f19eb5-081f-4dc1-a4ae-bdf17c80ccd6",
                             Email = "admin@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKVy70+NNRFSvFDUAy/3A9df+i5IzUdzKgDt2HLKk3Qmah488bn64zDA2XWwnP6a4w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI6cCkpiZ3QTWLIAzLyS6L4u3p3tbks/CgBf92IeesfNh2SZv/Rp0O/itwWddyC3cQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6b42d2f6-e50c-4b07-863a-e50fe74b0721",
+                            SecurityStamp = "27dd3dd4-f2a7-4f69-844f-8f9ff6ce2502",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -135,21 +135,21 @@ namespace Carental.Infrastructure.Identity.Migrations
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889670",
-                            ConcurrencyStamp = "18d32dd1-9d25-4e91-923c-84c103c71324",
+                            ConcurrencyStamp = "a8ee9c9e-2e5b-4e37-8b8f-249c3d5e9f4c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889671",
-                            ConcurrencyStamp = "cadd01bc-3770-4422-a17b-0ed6aefe8969",
+                            ConcurrencyStamp = "3331c492-be4e-4940-a19a-87913003586e",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         },
                         new
                         {
                             Id = "e65a3dfc-8509-4552-a814-ccd9df889672",
-                            ConcurrencyStamp = "4ca548ee-756f-441c-9663-b60f6240db46",
+                            ConcurrencyStamp = "bba01495-e4c5-4614-aa9b-e87a92ceb010",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

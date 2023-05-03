@@ -1,4 +1,5 @@
 ﻿using Carental.Application.DTOs.Identity;
+using System.Runtime.CompilerServices;
 
 namespace Carental.Application.Contracts.Identity
 {
@@ -6,8 +7,8 @@ namespace Carental.Application.Contracts.Identity
     {
         public Task<string> CreateAccount(CreateAccountRequestDTO createAccountRequest);
 
-        public Task<IEnumerable<User>> GetAllUsersAsync(CancellationToken cancellationToken = default);
+        public IAsyncEnumerable<User> GetAllUsersAsync(CancellationToken cancellationToken = default);
 
-        public Task<IEnumerable<User>> GetUserByIdAsync(string id, CancellationToken cancellationToken = default);
+        public Task<User?> GetUserByIdAsync(string id, CancellationToken cancellationToken = default);
     }
 }

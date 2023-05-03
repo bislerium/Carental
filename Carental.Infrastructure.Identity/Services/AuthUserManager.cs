@@ -2,10 +2,13 @@
 using Carental.Application.DTOs.Error;
 using Carental.Application.DTOs.Identity;
 using Carental.Application.Exceptions.CRUD;
+using Carental.Domain.Enums;
 using Carental.Infrastructure.Identity.Entities;
 using Carental.Infrastructure.Identity.Extensions;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace Carental.Infrastructure.Identity.Services
 {
@@ -50,32 +53,26 @@ namespace Carental.Infrastructure.Identity.Services
             return user.Id;
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync(CancellationToken cancellationToken = default)
+        public async IAsyncEnumerable<User> GetAllUsersAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            _userManager
-                .Users
-                .Select(x => new {
-                    Id = x.Id,
-                    UserName = x.UserName,
-                    NormalizedUserName = x.NormalizedUserName,
-                    Email = x.Email,
-                    NormalizedEmail = x.NormalizedEmail,
-                    EmailConfirmed = x.EmailConfirmed,
-                    PasswordHash = x.PasswordHash,
-                    PhoneNumber = x.PhoneNumber,
-                    PhoneNumberConfirmed = x.PhoneNumberConfirmed,
-                    TwoFactorEnabled = x.TwoFactorEnabled,
-                    LockoutEnd = x.LockoutEnd,
-                    LockoutEnabled = x.LockoutEnabled,
-                    AccessFailedCount = x.AccessFailedCount
-                });
-           var users = _userManager.Users.Adapt<IEnumerable<User>>();
-            return users;
+          
+            await foreach(AppUser appUser in _userManager.Users.AsAsyncEnumerable().WithCancellation(cancellationToken))
+            {
+                User user = appUser.Adapt<User>();
+                user.Role = await GetUserRole(appUser);
+                yield return user;
+            }
         }
 
-        public Task<IEnumerable<User>> GetUserByIdAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<User?> GetUserByIdAsync(string id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            IdentityUser? user = await _userManager.FindByIdAsync(id);
+            return user?.Adapt<User>();
+        }
+
+        private async Task<UserRole> GetUserRole(AppUser user) {
+            var r = await _userManager.GetRolesAsync(user);
+            return Enum.Parse<UserRole>(r.First());
         }
     }
 }

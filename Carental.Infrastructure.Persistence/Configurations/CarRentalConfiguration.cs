@@ -26,6 +26,11 @@ namespace Carental.Infrastructure.Persistence.Configurations
                 .WithMany(i => i.Rentals)
                 .HasForeignKey(r => r.CarInventoryId);
 
+            builder
+                .HasOne(r => r.CarDamage)
+                .WithOne(d => d.Rental)
+                .HasForeignKey<CarRental>(d => d.CarDamageId);
+
             builder.Property(r => r.RequestDate)
                 .IsRequired()
                 .HasConversion<DateOnlyToDateTimeConverter>();

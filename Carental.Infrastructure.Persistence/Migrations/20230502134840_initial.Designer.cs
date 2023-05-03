@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Carental.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230430075542_initial")]
+    [Migration("20230502134840_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -171,6 +171,9 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.Property<int>("ApprovalStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("CarDamageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("CarInventoryId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -211,6 +214,10 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarDamageId")
+                        .IsUnique()
+                        .HasFilter("[CarDamageId] IS NOT NULL");
 
                     b.HasIndex("CarInventoryId");
 
@@ -292,7 +299,8 @@ namespace Carental.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<int>("DiscountRate")
                         .HasColumnType("int");
@@ -314,6 +322,11 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("Code"), new[] { "EndDate", "DiscountRate" });
 
                     b.ToTable("DiscountOffers");
                 });
@@ -356,17 +369,6 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("Carental.Domain.Entities.CarDamage", b =>
-                {
-                    b.HasOne("Carental.Domain.Entities.CarRental", "Rental")
-                        .WithOne("CarDamage")
-                        .HasForeignKey("Carental.Domain.Entities.CarDamage", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Rental");
-                });
-
             modelBuilder.Entity("Carental.Domain.Entities.CarInventory", b =>
                 {
                     b.HasOne("Carental.Domain.Entities.Car", "Car")
@@ -380,6 +382,10 @@ namespace Carental.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Carental.Domain.Entities.CarRental", b =>
                 {
+                    b.HasOne("Carental.Domain.Entities.CarDamage", "CarDamage")
+                        .WithOne("Rental")
+                        .HasForeignKey("Carental.Domain.Entities.CarRental", "CarDamageId");
+
                     b.HasOne("Carental.Domain.Entities.CarInventory", "CarInventory")
                         .WithMany("Rentals")
                         .HasForeignKey("CarInventoryId")
@@ -395,6 +401,8 @@ namespace Carental.Infrastructure.Persistence.Migrations
                     b.HasOne("Carental.Domain.Entities.DiscountOffer", "DiscountOffer")
                         .WithMany()
                         .HasForeignKey("DiscountOfferId");
+
+                    b.Navigation("CarDamage");
 
                     b.Navigation("CarInventory");
 
@@ -424,14 +432,15 @@ namespace Carental.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Carental.Domain.Entities.CarDamage", b =>
+                {
+                    b.Navigation("Rental")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Carental.Domain.Entities.CarInventory", b =>
                 {
                     b.Navigation("Rentals");
-                });
-
-            modelBuilder.Entity("Carental.Domain.Entities.CarRental", b =>
-                {
-                    b.Navigation("CarDamage");
                 });
 
             modelBuilder.Entity("Carental.Domain.Entities.Customer", b =>

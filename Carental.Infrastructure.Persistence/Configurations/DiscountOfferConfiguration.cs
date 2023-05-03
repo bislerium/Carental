@@ -8,7 +8,7 @@ namespace Carental.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<DiscountOffer> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(v => v.Id);
 
             builder
                 .HasIndex(v => v.Code)
@@ -26,11 +26,18 @@ namespace Carental.Infrastructure.Persistence.Configurations
                 .HasAnnotation(nameof(RegularExpressionAttribute), "^CR[A-Z0-9]{6}$");
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
             builder.Property(x => x.Title).IsRequired();
-            builder.Property(x => x.Description).IsRequired();
+            builder.Property(x => x.Description)                
+                .HasMaxLength(300)
+                .IsRequired();
+
             builder.Property(x => x.DiscountRate).IsRequired();
+
             builder.Property(x => x.StartDate).IsRequired();
+
             builder.Property(x => x.EndDate).IsRequired();
+
         }
     }
 }
